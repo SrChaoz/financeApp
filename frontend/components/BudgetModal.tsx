@@ -117,7 +117,7 @@ export default function BudgetModal({ isOpen, onClose, onSuccess, budget }: Budg
                         Límite Mensual *
                     </label>
                     <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">$</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
                         <input
                             type="number"
                             inputMode="decimal"
@@ -125,7 +125,8 @@ export default function BudgetModal({ isOpen, onClose, onSuccess, budget }: Budg
                             min="0"
                             value={limitAmount}
                             onChange={(e) => setLimitAmount(e.target.value)}
-                            className="mobile-input w-full pl-10 pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500 text-lg"
+                            className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500 text-lg"
+                            style={{ paddingLeft: '2.5rem' }}
                             placeholder="0.00"
                             required
                             autoFocus

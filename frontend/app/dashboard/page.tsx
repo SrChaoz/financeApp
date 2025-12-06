@@ -35,6 +35,7 @@ import { es } from 'date-fns/locale'
 import TransactionModal from '@/components/TransactionModal'
 import WelcomeWizard from '@/components/WelcomeWizard'
 import PullToRefresh from '@/components/PullToRefresh'
+import AnimatedNumber from '@/components/AnimatedNumber'
 import { getGreeting } from '@/lib/avatarUtils'
 
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6', '#f97316']
@@ -194,7 +195,8 @@ export default function DashboardPage() {
                             <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Dashboard</h1>
                             <p className="text-slate-400 text-sm md:text-base">Resumen de tus finanzas personales</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        {/* Date Range Filter & Refresh - Hidden on mobile, visible on desktop */}
+                        <div className="hidden md:flex items-center gap-2">
                             {/* Date Range Filter */}
                             <select
                                 value={dateRange}
@@ -249,7 +251,9 @@ export default function DashboardPage() {
                                 </span>
                             </div>
                             <h3 className="text-slate-400 text-sm font-medium mb-1">Saldo Total</h3>
-                            <p className="text-3xl font-bold text-white">${balance.toFixed(2)}</p>
+                            <p className="text-3xl font-bold text-white">
+                                <AnimatedNumber value={balance} prefix="$" decimals={2} duration={0.8} />
+                            </p>
                         </div>
 
                         {/* Income Card */}
@@ -261,7 +265,9 @@ export default function DashboardPage() {
                                 <ArrowUpRight className="w-5 h-5 text-green-400" />
                             </div>
                             <h3 className="text-slate-400 text-sm font-medium mb-1">Ingresos</h3>
-                            <p className="text-3xl font-bold text-white">${totalIncome.toFixed(2)}</p>
+                            <p className="text-3xl font-bold text-white">
+                                <AnimatedNumber value={totalIncome} prefix="$" decimals={2} duration={0.8} />
+                            </p>
                         </div>
 
                         {/* Expenses Card */}
@@ -273,7 +279,9 @@ export default function DashboardPage() {
                                 <ArrowDownRight className="w-5 h-5 text-red-400" />
                             </div>
                             <h3 className="text-slate-400 text-sm font-medium mb-1">Gastos</h3>
-                            <p className="text-3xl font-bold text-white">${totalExpenses.toFixed(2)}</p>
+                            <p className="text-3xl font-bold text-white">
+                                <AnimatedNumber value={totalExpenses} prefix="$" decimals={2} duration={0.8} />
+                            </p>
                         </div>
                     </div>
 

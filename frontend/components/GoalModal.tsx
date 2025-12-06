@@ -129,14 +129,15 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                             💰 Monto Objetivo *
                         </label>
                         <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">$</span>
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
                             <input
                                 type="number"
                                 inputMode="decimal"
                                 step="0.01"
                                 value={targetAmount}
                                 onChange={(e) => setTargetAmount(e.target.value)}
-                                className="mobile-input w-full pl-10 pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                style={{ paddingLeft: '2.5rem' }}
                                 placeholder="0.00"
                                 required
                             />
@@ -148,14 +149,15 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                             📊 Monto Actual
                         </label>
                         <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">$</span>
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
                             <input
                                 type="number"
                                 inputMode="decimal"
                                 step="0.01"
                                 value={currentAmount}
                                 onChange={(e) => setCurrentAmount(e.target.value)}
-                                className="mobile-input w-full pl-10 pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                style={{ paddingLeft: '2.5rem' }}
                                 placeholder="0.00"
                             />
                         </div>

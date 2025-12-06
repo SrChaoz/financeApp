@@ -10,6 +10,7 @@ interface AddMoneyModalProps {
     isOpen: boolean
     onClose: () => void
     onSuccess: () => void
+    onGoalCompleted?: (goal: { name: string; targetAmount: string }) => void
     goal: {
         id: string
         name: string
@@ -18,7 +19,7 @@ interface AddMoneyModalProps {
     }
 }
 
-export default function AddMoneyModal({ isOpen, onClose, onSuccess, goal }: AddMoneyModalProps) {
+export default function AddMoneyModal({ isOpen, onClose, onSuccess, onGoalCompleted, goal }: AddMoneyModalProps) {
     const { showToast } = useToast()
     const [amount, setAmount] = useState('')
     const [loading, setLoading] = useState(false)
@@ -37,10 +38,20 @@ export default function AddMoneyModal({ isOpen, onClose, onSuccess, goal }: AddM
 
         try {
             const newCurrentAmount = parseFloat(goal.currentAmount) + parseFloat(amount)
+            const wasCompleted = parseFloat(goal.currentAmount) >= parseFloat(goal.targetAmount)
+            const isNowCompleted = newCurrentAmount >= parseFloat(goal.targetAmount)
 
             await api.put(`/api/goals/${goal.id}`, {
                 currentAmount: newCurrentAmount
             })
+
+            // Check if goal just got completed
+            if (!wasCompleted && isNowCompleted && onGoalCompleted) {
+                onGoalCompleted({
+                    name: goal.name,
+                    targetAmount: goal.targetAmount
+                })
+            }
 
             showToast(`¡$${parseFloat(amount).toFixed(2)} agregados a ${goal.name}!`, 'success')
             onSuccess()
@@ -94,13 +105,14 @@ export default function AddMoneyModal({ isOpen, onClose, onSuccess, goal }: AddM
                         ¿Cuánto quieres agregar? *
                     </label>
                     <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">$</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
                         <input
                             type="number"
                             step="0.01"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            className="mobile-input w-full pl-10 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-white text-lg font-bold"
+                            className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-white text-lg font-bold"
+                            style={{ paddingLeft: '2.5rem' }}
                             placeholder="0.00"
                             autoFocus
                             required

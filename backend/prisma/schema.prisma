@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String        @id @default(uuid())
+  username         String        @unique
+  password         String
+  email            String?
+  firstName        String?
+  lastName         String?
+  gender           String?
+  birthDate        DateTime?
+  profileCompleted Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @default(now()) @updatedAt
+  accounts         Account[]
+  transactions     Transaction[]
+  budgets          Budget[]
+  goals            Goal[]
+  reminders        Reminder[]
+
+  @@map("users")
+}
+
+model Account {
+  id           String        @id @default(uuid())
+  name         String
+  type         String
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+
+  @@map("accounts")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Decimal         @db.Decimal(10, 2)
+  type        TransactionType
+  date        DateTime        @default(now())
+  category    String
+  notes       String?
+  isRecurring Boolean         @default(false)
+  accountId   String
+  account     Account         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now())
+
+  @@map("transactions")
+}
+
+model Budget {
+  id          String   @id @default(uuid())
+  category    String
+  limitAmount Decimal  @db.Decimal(10, 2)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@map("budgets")
+}
+
+model Goal {
+  id            String    @id @default(uuid())
+  name          String
+  targetAmount  Decimal   @db.Decimal(10, 2)
+  currentAmount Decimal   @db.Decimal(10, 2) @default(0)
+  deadline      DateTime?
+  description   String?
+  isCompleted   Boolean   @default(false)
+  completedAt   DateTime?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("goals")
+}
+
+enum ReminderFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+model Reminder {
+  id          String            @id @default(uuid())
+  title       String
+  amount      Decimal?          @db.Decimal(10, 2)
+  dueDate     DateTime
+  frequency   ReminderFrequency
+  category    String
+  notes       String?
+  isActive    Boolean           @default(true)
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("reminders")
+}

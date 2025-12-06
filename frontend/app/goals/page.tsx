@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
-import { Plus, Target, Edit2, Trash2, TrendingUp, CheckCircle2, Calendar, DollarSign } from 'lucide-react'
+import { Plus, Target, Edit2, Trash2, TrendingUp, CheckCircle2, Calendar, DollarSign, ChevronRight } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import GoalModal from '@/components/GoalModal'
 import AddMoneyModal from '@/components/AddMoneyModal'
 import ConfirmDialog from '@/components/ConfirmDialog'
+import CelebrationModal from '@/components/CelebrationModal'
 import PullToRefresh from '@/components/PullToRefresh'
 import { useToast } from '@/components/ToastProvider'
 
@@ -33,6 +34,8 @@ export default function GoalsPage() {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
     const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null)
+    const [showCelebration, setShowCelebration] = useState(false)
+    const [completedGoalData, setCompletedGoalData] = useState<{ name: string; targetAmount: string } | null>(null)
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -97,6 +100,11 @@ export default function GoalsPage() {
         setSelectedGoal(null)
     }
 
+    const handleGoalCompleted = (goal: { name: string; targetAmount: string }) => {
+        setCompletedGoalData(goal)
+        setShowCelebration(true)
+    }
+
     const getProgress = (goal: Goal) => {
         const current = parseFloat(goal.currentAmount)
         const target = parseFloat(goal.targetAmount)
@@ -138,13 +146,29 @@ export default function GoalsPage() {
                         <h3 className="text-slate-400 text-sm font-medium mb-2">Total Metas</h3>
                         <p className="text-3xl font-bold text-white">{goals.length}</p>
                     </div>
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">En Progreso</h3>
-                        <p className="text-3xl font-bold text-blue-400">{activeGoals.length}</p>
+                    <div
+                        onClick={() => router.push('/goals/active')}
+                        className="glass-effect rounded-xl p-4 md:p-6 cursor-pointer hover:bg-slate-800/50 transition-all group"
+                    >
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-slate-400 text-sm font-medium mb-2">En Progreso</h3>
+                                <p className="text-3xl font-bold text-blue-400">{activeGoals.length}</p>
+                            </div>
+                            <ChevronRight className="w-6 h-6 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                        </div>
                     </div>
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Completadas</h3>
-                        <p className="text-3xl font-bold text-green-400">{completedGoals.length}</p>
+                    <div
+                        onClick={() => router.push('/goals/completed')}
+                        className="glass-effect rounded-xl p-4 md:p-6 cursor-pointer hover:bg-slate-800/50 transition-all group"
+                    >
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-slate-400 text-sm font-medium mb-2">Completadas</h3>
+                                <p className="text-3xl font-bold text-green-400">{completedGoals.length}</p>
+                            </div>
+                            <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-green-400 transition-colors" />
+                        </div>
                     </div>
                 </div>
 
@@ -290,17 +314,33 @@ export default function GoalsPage() {
                         isOpen={showAddMoneyModal}
                         onClose={handleAddMoneyClose}
                         onSuccess={fetchGoals}
+                        onGoalCompleted={handleGoalCompleted}
                         goal={selectedGoal}
                     />
                 )}
 
-                <ConfirmDialog
-                    isOpen={showDeleteDialog}
-                    onClose={() => setShowDeleteDialog(false)}
-                    onConfirm={confirmDelete}
-                    title="Eliminar Meta"
-                    message={`¿Estás seguro de que deseas eliminar la meta "${goalToDelete?.name}"?`}
-                />
+                {goalToDelete && (
+                    <ConfirmDialog
+                        isOpen={showDeleteDialog}
+                        onClose={() => setShowDeleteDialog(false)}
+                        onConfirm={confirmDelete}
+                        title="Eliminar Meta"
+                        message={`¿Estás seguro de que deseas eliminar la meta "${goalToDelete.name}"?`}
+                    />
+                )}
+
+                {/* Celebration Modal */}
+                {completedGoalData && (
+                    <CelebrationModal
+                        isOpen={showCelebration}
+                        onClose={() => {
+                            setShowCelebration(false)
+                            setCompletedGoalData(null)
+                        }}
+                        goalName={completedGoalData.name}
+                        goalAmount={completedGoalData.targetAmount}
+                    />
+                )}
             </div>
         </PullToRefresh>
     )

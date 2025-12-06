@@ -172,8 +172,8 @@ export default function TransactionModal({
                         setCategory('')
                     }}
                     className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all touch-target ${type === 'EXPENSE'
-                            ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
-                            : 'bg-slate-800 text-slate-400 hover:text-white'
+                        ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
+                        : 'bg-slate-800 text-slate-400 hover:text-white'
                         }`}
                 >
                     💸 Gasto
@@ -185,8 +185,8 @@ export default function TransactionModal({
                         setCategory('')
                     }}
                     className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all touch-target ${type === 'INCOME'
-                            ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
-                            : 'bg-slate-800 text-slate-400 hover:text-white'
+                        ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
+                        : 'bg-slate-800 text-slate-400 hover:text-white'
                         }`}
                 >
                     💰 Ingreso
@@ -199,7 +199,7 @@ export default function TransactionModal({
                     Monto *
                 </label>
                 <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
                     <input
                         type="number"
                         inputMode="decimal"
@@ -207,7 +207,8 @@ export default function TransactionModal({
                         min="0"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
-                        className="mobile-input w-full pl-10 pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500 text-lg"
+                        className="mobile-input w-full pl-4 pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500 text-lg"
+                        style={{ paddingLeft: '2.5rem' }}
                         placeholder="0.00"
                         required
                         autoFocus
