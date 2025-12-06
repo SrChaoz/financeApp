@@ -1,0 +1,16 @@
+{
+    "name": "FinanzasPro",
+    "short_name": "FinanzasPro",
+    "description": "Gestión de finanzas personales",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#8b5cf6",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

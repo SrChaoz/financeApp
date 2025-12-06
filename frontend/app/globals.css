@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-200;
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-slate-900/50 backdrop-blur-md border border-slate-800;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-violet-500/20;
+  }
+
+  .animate-in {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+  }
+
+  .slide-in-from-right {
+    animation-name: slideInFromRight;
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* Mobile optimizations */
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+
+  .mobile-input {
+    @apply text-base py-3 px-4;
+  }
+
+  .card-mobile {
+    @apply p-4 mb-3;
+  }
+
+  @media (min-width: 768px) {
+    .card-mobile {
+      @apply p-6 mb-4;
+    }
+  }
+}
