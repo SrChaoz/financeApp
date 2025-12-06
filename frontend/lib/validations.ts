@@ -11,9 +11,7 @@ export type AccountFormData = z.infer<typeof accountSchema>
 // Transaction validation schema
 export const transactionSchema = z.object({
     amount: z.number().positive('El monto debe ser mayor a 0'),
-    type: z.enum(['INCOME', 'EXPENSE'], {
-        errorMap: () => ({ message: 'Tipo inválido' })
-    }),
+    type: z.enum(['INCOME', 'EXPENSE']),
     date: z.string().min(1, 'La fecha es requerida'),
     category: z.string().min(1, 'La categoría es requerida'),
     notes: z.string().optional(),
