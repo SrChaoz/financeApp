@@ -4,12 +4,6 @@ const nextConfig = {
     experimental: {
         missingSuspenseWithCSRBailout: false,
     },
-    // Force dynamic rendering for all pages
-    output: 'standalone',
-    // Disable static page generation
-    generateBuildId: async () => {
-        return 'build-' + Date.now()
-    },
 }
 
 module.exports = nextConfig
