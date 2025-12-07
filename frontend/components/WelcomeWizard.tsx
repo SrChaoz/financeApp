@@ -64,7 +64,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => { }} title="">
+        <Modal isOpen={isOpen} onClose={handleSkip} title="">
             <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-purple-600 mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
