@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import Modal from './Modal'
-import api from '@/lib/api'
 import { useToast } from './ToastProvider'
-import { UserPlus, Sparkles } from 'lucide-react'
+import { UserPlus, Sparkles, X } from 'lucide-react'
+import api from '@/lib/api'
 
 interface WelcomeWizardProps {
     isOpen: boolean
