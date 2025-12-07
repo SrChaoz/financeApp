@@ -62,124 +62,144 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
         }
     }
 
+    if (!isOpen) return null
+
     return (
-        <Modal isOpen={isOpen} onClose={handleSkip} title="">
-            <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-purple-600 mb-4">
-                    <Sparkles className="w-8 h-8 text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">¡Bienvenido a FinanzasPro!</h2>
-                <p className="text-slate-400">
-                    Completa tu perfil para una experiencia personalizada
-                </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                            Nombre
-                        </label>
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
-                            placeholder="Tu nombre"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                            Apellido
-                        </label>
-                        <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
-                            placeholder="Tu apellido"
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
-                        placeholder="tu@email.com"
-                    />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                            Género
-                        </label>
-                        <select
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto">
+            <div className="min-h-screen flex items-start justify-center p-4 py-8">
+                <div className="w-full max-w-md bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 my-auto">
+                    {/* Header with close button */}
+                    <div className="relative p-6 border-b border-slate-800">
+                        <button
+                            onClick={handleSkip}
+                            className="absolute top-4 right-4 p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                            aria-label="Cerrar"
                         >
-                            <option value="">Seleccionar...</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                            <option value="Prefiero no decir">Prefiero no decir</option>
-                        </select>
+                            <X className="w-6 h-6 text-slate-300" />
+                        </button>
+
+                        <div className="text-center pr-8">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-purple-600 mb-3">
+                                <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-white mb-2">
+                                ¡Bienvenido a FinanzasPro!
+                            </h2>
+                            <p className="text-slate-400 text-sm">
+                                Completa tu perfil para una experiencia personalizada
+                            </p>
+                        </div>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                            Fecha de Nacimiento
-                        </label>
-                        <input
-                            type="date"
-                            name="birthDate"
-                            value={formData.birthDate}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                        />
-                    </div>
-                </div>
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Nombre
+                                </label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                    placeholder="Tu nombre"
+                                />
+                            </div>
 
-                <p className="text-xs text-slate-500 text-center">
-                    Todos los campos son opcionales. Puedes completarlos después desde tu perfil.
-                </p>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Apellido
+                                </label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                    placeholder="Tu apellido"
+                                />
+                            </div>
+                        </div>
 
-                <div className="flex gap-3 pt-4">
-                    <button
-                        type="button"
-                        onClick={handleSkip}
-                        className="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
-                    >
-                        Omitir por ahora
-                    </button>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="flex-1 px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
-                        {loading ? (
-                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                            <>
-                                <UserPlus className="w-5 h-5" />
-                                Completar Perfil
-                            </>
-                        )}
-                    </button>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                Email
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                placeholder="tu@email.com"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Género
+                                </label>
+                                <select
+                                    name="gender"
+                                    value={formData.gender}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                >
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Otro">Otro</option>
+                                    <option value="Prefiero no decir">Prefiero no decir</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Fecha de Nacimiento
+                                </label>
+                                <input
+                                    type="date"
+                                    name="birthDate"
+                                    value={formData.birthDate}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                />
+                            </div>
+                        </div>
+
+                        <p className="text-xs text-slate-500 text-center py-2">
+                            Todos los campos son opcionales. Puedes completarlos después desde tu perfil.
+                        </p>
+
+                        <div className="flex flex-col gap-3 pt-2">
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
+                            >
+                                {loading ? (
+                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                    <>
+                                        <UserPlus className="w-5 h-5" />
+                                        Completar Perfil
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSkip}
+                                className="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-all font-medium"
+                            >
+                                Omitir por ahora
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </Modal>
+            </div>
+        </div>
     )
 }
