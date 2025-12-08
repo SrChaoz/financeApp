@@ -18,7 +18,7 @@ const getReminders = async (req, res) => {
         const reminders = await prisma.reminder.findMany({
             where,
             orderBy: {
-                dueDate: 'asc'
+                createdAt: 'desc'
             }
         });
 

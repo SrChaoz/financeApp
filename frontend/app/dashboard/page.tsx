@@ -62,6 +62,44 @@ export default function DashboardPage() {
         fetchUserProfile()
     }, [dateRange])
 
+    // Handle back button - "Press twice to exit"
+    useEffect(() => {
+        let lastBackPress = 0
+
+        const handleBackButton = () => {
+            const now = Date.now()
+            if (now - lastBackPress < 2000) {
+                // Try to close the app (works in PWA)
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    window.close()
+                }
+            } else {
+                lastBackPress = now
+                // Show toast notification
+                const toast = document.createElement('div')
+                toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-in slide-in-from-bottom'
+                toast.textContent = 'Presiona de nuevo para salir'
+                document.body.appendChild(toast)
+
+                setTimeout(() => {
+                    toast.remove()
+                }, 2000)
+
+                // Prevent navigation by pushing current state again
+                window.history.pushState(null, '', window.location.pathname)
+            }
+        }
+
+        // Push initial state to prevent going back
+        window.history.pushState(null, '', window.location.pathname)
+        window.addEventListener('popstate', handleBackButton)
+
+        return () => {
+            window.removeEventListener('popstate', handleBackButton)
+        }
+    }, [])
+
+
     const fetchData = async () => {
         try {
             setLoading(true)

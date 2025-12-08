@@ -33,7 +33,7 @@ const getTransactions = async (req, res) => {
                 }
             },
             orderBy: {
-                date: 'desc'
+                createdAt: 'desc'
             }
         });
 

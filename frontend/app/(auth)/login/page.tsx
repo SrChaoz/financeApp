@@ -41,7 +41,7 @@ export default function LoginPage() {
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('user', JSON.stringify(response.data.user))
-                router.push('/dashboard')
+                router.replace('/dashboard')
             }
         } catch (err: any) {
             setError(err.response?.data?.error?.message || 'Error al procesar la solicitud')
@@ -168,8 +168,8 @@ export default function LoginPage() {
                             type="submit"
                             disabled={loading}
                             className={`w-full py-3 px-4 ${isLogin
-                                    ? 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700'
-                                    : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
+                                ? 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700'
+                                : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
                                 } text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg`}
                         >
                             {loading ? (
