@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -41,6 +42,7 @@ model Account {
   createdAt    DateTime      @default(now())
 
   @@map("accounts")
+  @@index([userId])
 }
 
 enum TransactionType {
@@ -63,6 +65,11 @@ model Transaction {
   createdAt   DateTime        @default(now())
 
   @@map("transactions")
+  @@index([userId])
+  @@index([accountId])
+  @@index([date])
+  @@index([category])
+  @@index([type])
 }
 
 model Budget {
@@ -74,6 +81,7 @@ model Budget {
   createdAt   DateTime @default(now())
 
   @@map("budgets")
+  @@index([userId])
 }
 
 model Goal {
@@ -91,6 +99,7 @@ model Goal {
   updatedAt     DateTime  @updatedAt
 
   @@map("goals")
+  @@index([userId])
 }
 
 enum ReminderFrequency {
@@ -115,4 +124,6 @@ model Reminder {
   updatedAt   DateTime          @updatedAt
 
   @@map("reminders")
+  @@index([userId])
+  @@index([dueDate])
 }

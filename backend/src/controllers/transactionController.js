@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('../lib/prisma');
 
 // Get all transactions for the authenticated user
 const getTransactions = async (req, res) => {
@@ -21,6 +19,7 @@ const getTransactions = async (req, res) => {
         if (category) where.category = category;
         if (accountId) where.accountId = accountId;
 
+        console.time('DB Create Connection & Query');
         const transactions = await prisma.transaction.findMany({
             where,
             include: {
@@ -36,6 +35,7 @@ const getTransactions = async (req, res) => {
                 createdAt: 'desc'
             }
         });
+        console.timeEnd('DB Create Connection & Query');
 
         res.json({ transactions });
     } catch (error) {

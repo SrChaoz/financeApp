@@ -1,22 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
-import {
-    Search,
-    Filter,
-    Plus,
-    Edit2,
-    Trash2,
-    ArrowUpRight,
-    ArrowDownRight,
-    ChevronLeft,
-    ChevronRight,
-    Calendar,
-    TrendingUp,
-    TrendingDown
-} from 'lucide-react'
+import { Trash2, Edit2, Search, Filter, X, ArrowUpRight, ArrowDownRight, ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import TransactionModal from '@/components/TransactionModal'
@@ -159,15 +146,8 @@ export default function TransactionsPage() {
     return (
         <>
             <PullToRefresh onRefresh={fetchData}>
-                <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                    {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Transacciones</h1>
-                            <p className="text-slate-400 text-sm md:text-base">Gestiona tus ingresos y gastos</p>
-                        </div>
-                    </div>
-
+                <div className="container mx-auto px-4 py-8 max-w-7xl">
+                    {/* Search and Filters */}
                     {/* Summary Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
                         <div className="glass-effect rounded-xl p-4 md:p-6">
@@ -467,15 +447,6 @@ export default function TransactionsPage() {
                     />
                 </div>
             </PullToRefresh>
-
-            {/* Floating Action Button */}
-            <button
-                onClick={() => setShowModal(true)}
-                className="fixed bottom-24 md:bottom-8 right-4 md:right-8 w-14 h-14 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full shadow-lg shadow-violet-500/50 flex items-center justify-center hover:scale-110 transition-transform z-40 touch-target"
-                aria-label="Nueva transacción"
-            >
-                <Plus className="w-6 h-6 text-white" />
-            </button>
         </>
     )
 }

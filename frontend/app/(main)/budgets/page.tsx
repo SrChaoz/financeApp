@@ -15,7 +15,12 @@ import {
 import BudgetModal from '@/components/BudgetModal'
 import ConfirmDialog from '@/components/ConfirmDialog'
 import PullToRefresh from '@/components/PullToRefresh'
-import { PieChart as RechartsP, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
+import dynamic from 'next/dynamic'
+
+const BudgetDistributionChart = dynamic(() => import('@/components/BudgetDistributionChart'), {
+    loading: () => <div className="h-[250px] w-full animate-pulse bg-slate-800/50 rounded-2xl" />,
+    ssr: false
+})
 
 interface Budget {
     id: string
@@ -157,22 +162,7 @@ export default function BudgetsPage() {
     return (
         <PullToRefresh onRefresh={fetchBudgets}>
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Presupuestos</h1>
-                        <p className="text-slate-400 text-sm md:text-base">Controla tus gastos por categoría</p>
-                    </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="flex items-center justify-center gap-2 px-4 py-3 touch-target bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-all font-medium shadow-lg shadow-violet-500/30"
-                    >
-                        <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">Nuevo Presupuesto</span>
-                    </button>
-                </div>
-
-                {/* Alerts */}
+                {/* Summary Cards */}
                 {exceededBudgets.length > 0 && (
                     <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
                         <div className="flex items-start gap-3">
@@ -338,39 +328,7 @@ export default function BudgetsPage() {
                         {/* Expense Distribution Chart - Hidden on mobile, visible on desktop */}
                         <div className="hidden md:block glass-effect rounded-xl p-4 md:p-6">
                             <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">Distribución de Gastos</h2>
-                            {chartData.length > 0 && chartData.some(d => d.value > 0) ? (
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <RechartsP>
-                                        <Pie
-                                            data={chartData}
-                                            cx="50%"
-                                            cy="50%"
-                                            labelLine={false}
-                                            label={({ name, percent }) => window.innerWidth >= 640 ? `${(percent * 100).toFixed(0)}%` : ''}
-                                            outerRadius={window.innerWidth >= 640 ? 90 : 70}
-                                            fill="#8884d8"
-                                            dataKey="value"
-                                        >
-                                            {chartData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip
-                                            contentStyle={{
-                                                backgroundColor: '#1e293b',
-                                                border: '1px solid #334155',
-                                                borderRadius: '8px'
-                                            }}
-                                            formatter={(value: any) => `$${value.toFixed(2)}`}
-                                        />
-                                        <Legend />
-                                    </RechartsP>
-                                </ResponsiveContainer>
-                            ) : (
-                                <div className="h-[250px] flex items-center justify-center">
-                                    <p className="text-slate-400">No hay gastos registrados aún</p>
-                                </div>
-                            )}
+                            <BudgetDistributionChart chartData={chartData} />
                         </div>
                     </div>
                 )}

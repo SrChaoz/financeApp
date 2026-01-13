@@ -24,8 +24,8 @@ export default function BottomSheet({
             onOpenChange={(open) => {
                 if (!open) onClose()
             }}
-            snapPoints={snapPoints}
-            fadeFromIndex={0}
+            dismissible={true}
+            shouldScaleBackground={false}
         >
             <Drawer.Portal>
                 <Drawer.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" />

@@ -136,22 +136,7 @@ export default function RemindersPage() {
     return (
         <PullToRefresh onRefresh={fetchReminders}>
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Recordatorios</h1>
-                        <p className="text-slate-400 text-sm md:text-base">Nunca olvides un pago importante</p>
-                    </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="touch-target bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-all font-medium px-4"
-                    >
-                        <Plus className="w-5 h-5 inline mr-2" />
-                        Nuevo Recordatorio
-                    </button>
-                </div>
-
-                {/* Alerts */}
+                {/* Summary Cards */}
                 {overdueReminders.length > 0 && (
                     <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
                         <div className="flex items-start gap-3">

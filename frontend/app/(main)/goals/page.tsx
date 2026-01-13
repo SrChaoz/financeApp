@@ -125,22 +125,7 @@ export default function GoalsPage() {
     return (
         <PullToRefresh onRefresh={fetchGoals}>
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Metas de Ahorro</h1>
-                        <p className="text-slate-400 text-sm md:text-base">Alcanza tus objetivos financieros</p>
-                    </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="touch-target bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-all font-medium px-4"
-                    >
-                        <Plus className="w-5 h-5 inline mr-2" />
-                        Nueva Meta
-                    </button>
-                </div>
-
-                {/* Summary */}
+                {/* Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
                     <div className="glass-effect rounded-xl p-4 md:p-6">
                         <h3 className="text-slate-400 text-sm font-medium mb-2">Total Metas</h3>

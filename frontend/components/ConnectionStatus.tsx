@@ -10,6 +10,9 @@ export default function ConnectionStatus() {
     const [showStatus, setShowStatus] = useState(false)
 
     useEffect(() => {
+        // Only run on client
+        if (typeof window === 'undefined') return
+
         setIsOnline(navigator.onLine)
         setConnectionType(getConnectionType())
 
@@ -41,9 +44,21 @@ export default function ConnectionStatus() {
             connection.addEventListener('change', handleConnectionChange)
         }
 
+        // Handle pageshow event for bfcache
+        const handlePageShow = (event: PageTransitionEvent) => {
+            if (event.persisted) {
+                // Page was restored from bfcache
+                setIsOnline(navigator.onLine)
+                setConnectionType(getConnectionType())
+            }
+        }
+
+        window.addEventListener('pageshow', handlePageShow)
+
         return () => {
             window.removeEventListener('online', handleOnline)
             window.removeEventListener('offline', handleOffline)
+            window.removeEventListener('pageshow', handlePageShow)
             if (connection) {
                 connection.removeEventListener('change', handleConnectionChange)
             }
@@ -55,13 +70,13 @@ export default function ConnectionStatus() {
     const isSlow = isSlowConnection()
 
     return (
-        <div className={`fixed bottom-24 md:bottom-8 right-4 z-40 transition-all duration-300 ${showStatus ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        <div className={`fixed bottom-24 md:bottom-8 right-4 z-40 transition-all duration-300 pointer-events-none ${showStatus ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
             <div className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg ${isOnline
-                    ? isSlow
-                        ? 'bg-yellow-600 text-white'
-                        : 'bg-green-600 text-white'
-                    : 'bg-red-600 text-white'
+                ? isSlow
+                    ? 'bg-yellow-600 text-white'
+                    : 'bg-green-600 text-white'
+                : 'bg-red-600 text-white'
                 }`}>
                 {isOnline ? (
                     isSlow ? (

@@ -2,9 +2,16 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, CreditCard, Receipt, PieChart, LogOut, Target, Bell, Wallet, MoreHorizontal, User } from 'lucide-react'
+import { LayoutDashboard, CreditCard, Receipt, PieChart, LogOut, Target, Bell, Wallet, MoreHorizontal, User, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react' // Import useState for mobile menu
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
+import api from '@/lib/api'
+
+// Dynamically import TransactionModal to reduce initial bundle size
+const TransactionModal = dynamic(() => import('./TransactionModal'), {
+    ssr: false, // Modals don't need SSR
+})
 
 const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -20,6 +27,26 @@ export default function Navigation() {
     const pathname = usePathname()
     const router = useRouter()
     const [showMobileMoreMenu, setShowMobileMoreMenu] = useState(false)
+    const [showTransactionModal, setShowTransactionModal] = useState(false)
+    const [initialTransactionType, setInitialTransactionType] = useState<'INCOME' | 'EXPENSE'>('EXPENSE')
+
+
+
+    // Listen for custom events to open transaction modal
+    useEffect(() => {
+        const handleOpenModal = (event: any) => {
+            const { type } = event.detail
+            if (type) {
+                setInitialTransactionType(type)
+            }
+            setShowTransactionModal(true)
+        }
+
+        window.addEventListener('openTransactionModal', handleOpenModal)
+        return () => {
+            window.removeEventListener('openTransactionModal', handleOpenModal)
+        }
+    }, [])
 
     // Don't show navigation on login page
     if (pathname === '/login') return null
@@ -30,10 +57,15 @@ export default function Navigation() {
         router.push('/login')
     }
 
-    // Items to show directly in mobile bottom nav (e.g., first 3)
-    const mobileDirectNavItems = navItems.slice(0, 3)
+    const handleTransactionSuccess = () => {
+        // Trigger a page refresh or data refetch if needed
+        window.location.reload()
+    }
+
+    // Items to show directly in mobile bottom nav (first 2)
+    const mobileDirectNavItems = navItems.slice(0, 2)
     // Items to show in the "More" menu
-    const mobileMoreMenuItems = navItems.slice(3)
+    const mobileMoreMenuItems = navItems.slice(2)
 
     return (
         <>
@@ -82,7 +114,8 @@ export default function Navigation() {
 
             {/* Mobile Bottom Navigation */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-effect border-t border-slate-800 z-50">
-                <div className="flex justify-around items-center h-16 px-2">
+                <div className="grid grid-cols-5 items-center h-16 px-2">
+                    {/* First 2 nav items */}
                     {mobileDirectNavItems.map((item) => {
                         const Icon = item.icon
                         const isActive = pathname === item.href
@@ -90,7 +123,7 @@ export default function Navigation() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all ${isActive
+                                className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${isActive
                                     ? 'text-violet-400'
                                     : 'text-slate-400'
                                     }`}
@@ -100,10 +133,34 @@ export default function Navigation() {
                             </Link>
                         )
                     })}
+
+                    {/* Central Add Button */}
+                    <button
+                        onClick={() => setShowTransactionModal(true)}
+                        className="flex flex-col items-center justify-center"
+                    >
+                        <div className="w-14 h-14 -mt-8 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full shadow-lg shadow-violet-500/50 flex items-center justify-center">
+                            <Plus className="w-7 h-7 text-white" />
+                        </div>
+                        <span className="text-xs font-medium text-violet-400 mt-1">Agregar</span>
+                    </button>
+
+                    {/* Accounts */}
+                    <Link
+                        href="/accounts"
+                        className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${pathname === '/accounts'
+                            ? 'text-violet-400'
+                            : 'text-slate-400'
+                            }`}
+                    >
+                        <CreditCard className="w-5 h-5" />
+                        <span className="text-xs font-medium">Cuentas</span>
+                    </Link>
+
                     {/* More button for mobile */}
                     <button
                         onClick={() => setShowMobileMoreMenu(true)}
-                        className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all ${showMobileMoreMenu ? 'text-violet-400' : 'text-slate-400'
+                        className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${showMobileMoreMenu ? 'text-violet-400' : 'text-slate-400'
                             }`}
                     >
                         <MoreHorizontal className="w-5 h-5" />
@@ -111,7 +168,7 @@ export default function Navigation() {
                     </button>
                 </div>
 
-                {/* Mobile More Menu Modal - Elegant Dark Design */}
+                {/* Mobile More Menu Modal */}
                 {showMobileMoreMenu && (
                     <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end justify-center" onClick={() => setShowMobileMoreMenu(false)}>
                         <div className="bg-slate-900/95 backdrop-blur-xl border-t border-slate-700 p-6 w-full max-w-md rounded-t-3xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -119,7 +176,7 @@ export default function Navigation() {
                                 <h3 className="text-xl font-bold text-white">Más Opciones</h3>
                                 <button
                                     onClick={() => setShowMobileMoreMenu(false)}
-                                    className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                                    className="p-2 hover:bg-slate-800 rounded-lg"
                                 >
                                     <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -130,27 +187,30 @@ export default function Navigation() {
                                 {mobileMoreMenuItems.map((item) => {
                                     const Icon = item.icon
                                     const isActive = pathname === item.href
-                                    // Subtle accent colors
                                     const iconColorClass = item.label === 'Presupuestos'
                                         ? 'text-purple-400'
                                         : item.label === 'Metas'
                                             ? 'text-blue-400'
-                                            : 'text-orange-400'
+                                            : item.label === 'Recordatorios'
+                                                ? 'text-orange-400'
+                                                : 'text-green-400'
 
                                     const bgColorClass = item.label === 'Presupuestos'
                                         ? 'bg-purple-500/10'
                                         : item.label === 'Metas'
                                             ? 'bg-blue-500/10'
-                                            : 'bg-orange-500/10'
+                                            : item.label === 'Recordatorios'
+                                                ? 'bg-orange-500/10'
+                                                : 'bg-green-500/10'
 
                                     return (
                                         <Link
                                             key={item.href}
                                             href={item.href}
                                             onClick={() => setShowMobileMoreMenu(false)}
-                                            className={`flex items-center gap-4 p-4 rounded-xl transition-all ${isActive
-                                                    ? 'bg-slate-800 border border-slate-700'
-                                                    : 'bg-slate-800/50 hover:bg-slate-800 border border-transparent hover:border-slate-700'
+                                            className={`flex items-center gap-4 p-4 rounded-xl ${isActive
+                                                ? 'bg-slate-800 border border-slate-700'
+                                                : 'bg-slate-800/50 hover:bg-slate-800 border border-transparent hover:border-slate-700'
                                                 }`}
                                         >
                                             <div className={`w-12 h-12 rounded-lg ${bgColorClass} flex items-center justify-center`}>
@@ -162,6 +222,7 @@ export default function Navigation() {
                                                     {item.label === 'Presupuestos' && 'Controla tus gastos'}
                                                     {item.label === 'Metas' && 'Ahorra para tus objetivos'}
                                                     {item.label === 'Recordatorios' && 'No olvides tus pagos'}
+                                                    {item.label === 'Perfil' && 'Tu información personal'}
                                                 </span>
                                             </div>
                                             <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,7 +237,7 @@ export default function Navigation() {
                                         handleLogout()
                                         setShowMobileMoreMenu(false)
                                     }}
-                                    className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-red-500/10 border border-transparent hover:border-red-500/30 transition-all w-full"
+                                    className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-red-500/10 border border-transparent hover:border-red-500/30 w-full"
                                 >
                                     <div className="w-12 h-12 rounded-lg bg-red-500/10 flex items-center justify-center">
                                         <LogOut className="w-6 h-6 text-red-400" />
@@ -194,6 +255,14 @@ export default function Navigation() {
                     </div>
                 )}
             </nav>
+
+            {/* Transaction Modal */}
+            <TransactionModal
+                isOpen={showTransactionModal}
+                onClose={() => setShowTransactionModal(false)}
+                onSuccess={handleTransactionSuccess}
+                initialType={initialTransactionType}
+            />
 
             {/* Spacer for desktop sidebar */}
             <div className="hidden md:block md:w-64" />

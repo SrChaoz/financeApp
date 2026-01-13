@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 
-const prisma = new PrismaClient();
+
 
 // Get all goals for the authenticated user
 const getGoals = async (req, res) => {

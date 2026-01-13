@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 
-const prisma = new PrismaClient();
+
 
 // Get all reminders for the authenticated user
 const getReminders = async (req, res) => {

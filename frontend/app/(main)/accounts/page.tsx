@@ -135,21 +135,6 @@ export default function AccountsPage() {
     return (
         <PullToRefresh onRefresh={fetchAccounts}>
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Cuentas</h1>
-                        <p className="text-slate-400 text-sm md:text-base">Gestiona tus cuentas bancarias y carteras</p>
-                    </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2 px-4 py-3 touch-target bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-all font-medium shadow-lg shadow-violet-500/30"
-                    >
-                        <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">Nueva Cuenta</span>
-                    </button>
-                </div>
-
                 {/* Summary */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
                     <div className="glass-effect rounded-xl p-4 md:p-6">

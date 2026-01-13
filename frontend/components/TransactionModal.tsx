@@ -27,6 +27,7 @@ interface TransactionModalProps {
     onClose: () => void
     onSuccess: () => void
     transaction?: Transaction | null
+    initialType?: 'INCOME' | 'EXPENSE'
 }
 
 const INCOME_CATEGORIES = [
@@ -58,7 +59,8 @@ export default function TransactionModal({
     isOpen,
     onClose,
     onSuccess,
-    transaction
+    transaction,
+    initialType = 'EXPENSE'
 }: TransactionModalProps) {
     const { showToast } = useToast()
     const [accounts, setAccounts] = useState<Account[]>([])
@@ -70,13 +72,22 @@ export default function TransactionModal({
     const [isRecurring, setIsRecurring] = useState(false)
     const [accountId, setAccountId] = useState('')
     const [loading, setLoading] = useState(false)
+    const [loadingAccounts, setLoadingAccounts] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
         if (isOpen) {
+            setLoadingAccounts(true)
             fetchAccounts()
+            // Set initial type when modal opens (only if not editing)
+            if (!transaction) {
+                setType(initialType)
+                // Also set appropriate category
+                const categories = initialType === 'INCOME' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
+                setCategory(categories[0])
+            }
         }
-    }, [isOpen])
+    }, [isOpen, initialType, transaction])
 
     useEffect(() => {
         if (transaction) {
@@ -87,7 +98,8 @@ export default function TransactionModal({
             setNotes(transaction.notes || '')
             setIsRecurring(transaction.isRecurring)
             setAccountId(transaction.accountId)
-        } else {
+        } else if (!isOpen) {
+            // Reset form when modal closes
             resetForm()
         }
         setError('')
@@ -95,7 +107,7 @@ export default function TransactionModal({
 
     const resetForm = () => {
         setAmount('')
-        setType('EXPENSE')
+        // Don't reset type here, let the useEffect handle it based on initialType
         setDate(new Date().toISOString().split('T')[0])
         setCategory('')
         setNotes('')
@@ -105,6 +117,7 @@ export default function TransactionModal({
 
     const fetchAccounts = async () => {
         try {
+            setLoadingAccounts(true)
             const response = await api.get('/api/accounts')
             setAccounts(response.data.accounts)
             if (response.data.accounts.length > 0 && !accountId) {
@@ -112,6 +125,9 @@ export default function TransactionModal({
             }
         } catch (error) {
             console.error('Error fetching accounts:', error)
+            showToast('Error al cargar cuentas', 'error')
+        } finally {
+            setLoadingAccounts(false)
         }
     }
 
@@ -161,7 +177,14 @@ export default function TransactionModal({
 
     const categories = type === 'INCOME' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
 
-    const formContent = (
+    const formContent = loadingAccounts ? (
+        <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+                <div className="w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-slate-400">Cargando...</p>
+            </div>
+        </div>
+    ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
             {/* Type Toggle */}
             <div className="flex gap-2">
