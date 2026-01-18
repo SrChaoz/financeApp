@@ -148,15 +148,15 @@ export default function PWAInstaller() {
 
             {/* Update Available Banner */}
             {updateAvailable && (
-                <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-50 bg-violet-600 text-white rounded-lg shadow-lg p-4">
+                <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-50 bg-primary text-white rounded-lg shadow-lg p-4">
                     <div className="flex items-center justify-between gap-4">
                         <div>
                             <p className="font-semibold">Nueva versión disponible</p>
-                            <p className="text-sm text-violet-100">Actualiza para obtener las últimas mejoras</p>
+                            <p className="text-sm text-primary-foreground/90">Actualiza para obtener las últimas mejoras</p>
                         </div>
                         <button
                             onClick={handleUpdate}
-                            className="px-4 py-2 bg-white text-violet-600 rounded-lg font-medium hover:bg-violet-50 transition-colors whitespace-nowrap"
+                            className="px-4 py-2 bg-white text-primary rounded-lg font-medium hover:bg-zinc-100 transition-colors whitespace-nowrap"
                         >
                             Actualizar
                         </button>

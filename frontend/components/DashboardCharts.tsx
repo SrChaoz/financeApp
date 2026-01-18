@@ -3,12 +3,12 @@
 import dynamic from 'next/dynamic'
 
 const CashFlowChart = dynamic(() => import('./CashFlowChart'), {
-    loading: () => <div className="glass-effect rounded-2xl p-4 md:p-6 h-[300px] animate-pulse" />,
+    loading: () => <div className="card-premium h-[330px] animate-pulse bg-zinc-900/50" />,
     ssr: false
 })
 
 const CategoryPieChart = dynamic(() => import('./CategoryPieChart'), {
-    loading: () => <div className="glass-effect rounded-2xl p-4 md:p-6 h-[300px] animate-pulse" />,
+    loading: () => <div className="card-premium h-[330px] animate-pulse bg-zinc-900/50" />,
     ssr: false
 })
 

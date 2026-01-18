@@ -116,7 +116,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                         placeholder="Ej: Vacaciones, Auto nuevo..."
                         required
                         autoFocus
@@ -136,7 +136,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                                 step="0.01"
                                 value={targetAmount}
                                 onChange={(e) => setTargetAmount(e.target.value)}
-                                className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                className="mobile-input w-full pr-4 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-lg"
                                 style={{ paddingLeft: '2.5rem' }}
                                 placeholder="0.00"
                                 required
@@ -156,7 +156,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                                 step="0.01"
                                 value={currentAmount}
                                 onChange={(e) => setCurrentAmount(e.target.value)}
-                                className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white text-lg"
+                                className="mobile-input w-full pr-4 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-lg"
                                 style={{ paddingLeft: '2.5rem' }}
                                 placeholder="0.00"
                             />
@@ -172,7 +172,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                         type="date"
                         value={deadline}
                         onChange={(e) => setDeadline(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                     />
                 </div>
 
@@ -183,7 +183,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white resize-none placeholder-slate-500"
+                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white resize-none placeholder-zinc-600"
                         rows={3}
                         placeholder="Describe tu meta..."
                     />
@@ -200,7 +200,7 @@ export default function GoalModal({ isOpen, onClose, onSuccess, goal }: GoalModa
                     </button>
                     <button
                         type="submit"
-                        className="flex-1 py-3 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl transition-all disabled:opacity-50 touch-target font-medium shadow-lg shadow-violet-600/30"
+                        className="flex-1 py-3 px-4 bg-gradient-primary hover:shadow-glow-primary text-white rounded-xl transition-all disabled:opacity-50 touch-target font-semibold shadow-lg active:scale-[0.98]"
                         disabled={loading}
                     >
                         {loading ? (

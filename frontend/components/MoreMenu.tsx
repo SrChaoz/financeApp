@@ -16,7 +16,7 @@ const menuItems = [
         href: '/budgets',
         icon: PieChart,
         color: 'text-white',
-        bgGradient: 'bg-gradient-to-r from-purple-600 to-purple-700',
+        bgGradient: 'bg-gradient-primary',
         description: 'Controla tus gastos mensuales'
     },
     {

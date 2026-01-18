@@ -117,7 +117,7 @@ export default function SwipeableItem({
                     transition: isRevealed ? 'transform 0.3s ease-out' : 'none',
                     touchAction: 'pan-y'
                 }}
-                className="relative bg-slate-900"
+                className="relative bg-transparent"
             >
                 {children}
             </div>

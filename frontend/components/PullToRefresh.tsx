@@ -77,9 +77,9 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
                     opacity: opacity
                 }}
             >
-                <div className="bg-slate-800/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
+                <div className="bg-zinc-800/80 backdrop-blur-sm rounded-full p-3 shadow-lg border border-zinc-700">
                     <RefreshCw
-                        className={`w-6 h-6 text-violet-400 ${isRefreshing ? 'animate-spin' : ''}`}
+                        className={`w-6 h-6 text-primary ${isRefreshing ? 'animate-spin' : ''}`}
                         style={{
                             transform: isRefreshing ? 'none' : `rotate(${rotation}deg)`,
                             transition: isRefreshing ? 'none' : 'transform 0.2s'

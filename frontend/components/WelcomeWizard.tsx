@@ -79,7 +79,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                         </button>
 
                         <div className="text-center pr-8">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-purple-600 mb-3">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary mb-3">
                                 <Sparkles className="w-8 h-8 text-white" />
                             </div>
                             <h2 className="text-2xl font-bold text-white mb-2">
@@ -103,7 +103,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                     name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                    className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                     placeholder="Tu nombre"
                                 />
                             </div>
@@ -117,7 +117,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                     name="lastName"
                                     value={formData.lastName}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                    className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                     placeholder="Tu apellido"
                                 />
                             </div>
@@ -132,7 +132,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                 placeholder="tu@email.com"
                             />
                         </div>
@@ -146,7 +146,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                     name="gender"
                                     value={formData.gender}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                    className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                                 >
                                     <option value="">Seleccionar...</option>
                                     <option value="Masculino">Masculino</option>
@@ -165,7 +165,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                     name="birthDate"
                                     value={formData.birthDate}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                    className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                                 />
                             </div>
                         </div>
@@ -178,7 +178,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
+                                className="w-full px-4 py-3 bg-gradient-primary hover:shadow-glow-primary text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-semibold shadow-lg active:scale-[0.98]"
                             >
                                 {loading ? (
                                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

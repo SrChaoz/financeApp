@@ -4,10 +4,11 @@
     "description": "Backend API for FinanzasPro - Personal Finance Management",
     "main": "src/index.js",
     "scripts": {
-        "start": "node src/index.js",
-        "dev": "nodemon src/index.js",
+        "start": "node -r dotenv/config src/index.js dotenv_config_path=.env.production",
+        "dev": "nodemon -r dotenv/config src/index.js dotenv_config_path=.env.development",
         "prisma:generate": "prisma generate",
         "prisma:migrate": "prisma migrate dev",
+        "prisma:migrate:prod": "prisma migrate deploy",
         "prisma:studio": "prisma studio"
     },
     "keywords": [

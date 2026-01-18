@@ -127,129 +127,147 @@ export default function AccountsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         )
     }
 
     return (
         <PullToRefresh onRefresh={fetchAccounts}>
-            <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
-                {/* Summary */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 rounded-lg bg-violet-600/20 flex items-center justify-center">
-                                <Wallet className="w-5 h-5 text-violet-400" />
-                            </div>
-                            <h3 className="text-slate-400 text-sm font-medium">Balance Total</h3>
-                        </div>
-                        <p className="text-3xl font-bold text-white">${totalBalance.toFixed(2)}</p>
-                    </div>
+            <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl pb-24 md:pb-8">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">Cuentas</h1>
+                </div>
 
-                    <div className="glass-effect rounded-2xl p-6">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 rounded-lg bg-green-600/20 flex items-center justify-center">
-                                <TrendingUp className="w-5 h-5 text-green-400" />
+                {/* Compact Summary Bar */}
+                <div className="card-premium p-4 mb-6 bg-gradient-to-br from-zinc-900 to-zinc-950">
+                    <div className="grid grid-cols-3 divide-x divide-zinc-800">
+                        {/* Total Balance */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Wallet className="w-3 h-3 text-primary" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Balance</p>
                             </div>
-                            <h3 className="text-slate-400 text-sm font-medium">Total Ingresos</h3>
+                            <p className="text-2xl md:text-3xl font-bold text-white">${totalBalance.toFixed(2)}</p>
                         </div>
-                        <p className="text-3xl font-bold text-white">${totalIncome.toFixed(2)}</p>
-                    </div>
 
-                    <div className="glass-effect rounded-2xl p-6">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 rounded-lg bg-red-600/20 flex items-center justify-center">
-                                <TrendingDown className="w-5 h-5 text-red-400" />
+                        {/* Total Income */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <TrendingUp className="w-3 h-3 text-emerald-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Ingresos</p>
                             </div>
-                            <h3 className="text-slate-400 text-sm font-medium">Total Gastos</h3>
+                            <p className="text-2xl md:text-3xl font-bold text-emerald-400">${totalIncome.toFixed(2)}</p>
                         </div>
-                        <p className="text-3xl font-bold text-white">${totalExpenses.toFixed(2)}</p>
+
+                        {/* Total Expenses */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <TrendingDown className="w-3 h-3 text-rose-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Gastos</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-rose-400">${totalExpenses.toFixed(2)}</p>
+                        </div>
                     </div>
                 </div>
 
                 {/* Accounts List */}
                 {accounts.length === 0 ? (
-                    <div className="glass-effect rounded-2xl p-12 text-center">
-                        <div className="w-16 h-16 rounded-full bg-violet-600/20 flex items-center justify-center mx-auto mb-4">
-                            <Wallet className="w-8 h-8 text-violet-400" />
+                    <div className="card-premium p-12 text-center">
+                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20">
+                            <Wallet className="w-8 h-8 text-primary" />
                         </div>
                         <h3 className="text-xl font-bold text-white mb-2">No hay cuentas aún</h3>
-                        <p className="text-slate-400 mb-6">Crea tu primera cuenta para empezar a gestionar tus finanzas</p>
+                        <p className="text-zinc-400 mb-6">Crea tu primera cuenta para empezar a gestionar tus finanzas</p>
                         <button
                             onClick={() => setShowModal(true)}
-                            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all"
+                            className="px-6 py-3 bg-gradient-to-tr from-indigo-500 to-violet-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] text-white rounded-xl transition-all font-semibold shadow-lg active:scale-[0.98]"
                         >
                             Crear Primera Cuenta
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                        {accounts.map((account) => (
-                            <div
-                                key={account.id}
-                                className="glass-effect rounded-xl p-4 md:p-6 hover:bg-slate-800/50 transition-all group"
+                    <>
+                        {/* Section Header with Add Button */}
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-lg font-bold text-white">Mis Cuentas</h2>
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-indigo-500 to-violet-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] text-white rounded-xl transition-all font-medium shadow-lg active:scale-95"
                             >
-                                {/* Account Header */}
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-lg bg-violet-600/20 flex items-center justify-center">
-                                            <Wallet className="w-6 h-6 text-violet-400" />
+                                <Plus className="w-4 h-4" />
+                                <span className="hidden sm:inline">Nueva Cuenta</span>
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                            {accounts.map((account) => (
+                                <div
+                                    key={account.id}
+                                    className="card-premium p-4 md:p-6 hover:border-primary/30 transition-all group"
+                                >
+                                    {/* Account Header */}
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                                                <Wallet className="w-6 h-6 text-primary" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-bold text-white">{account.name}</h3>
+                                                <p className="text-sm text-slate-400">{account.type}</p>
+                                            </div>
                                         </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                onClick={() => handleEdit(account)}
+                                                className="p-2 hover:bg-slate-700 rounded-lg transition-colors touch-target"
+                                                title="Editar"
+                                            >
+                                                <Edit2 className="w-4 h-4 text-slate-400 hover:text-white" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(account)}
+                                                className="p-2 hover:bg-slate-700 rounded-lg transition-colors touch-target"
+                                                title="Eliminar"
+                                            >
+                                                <Trash2 className="w-4 h-4 text-slate-400 hover:text-red-400" />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Balance */}
+                                    <div className="mb-4">
+                                        <p className="text-sm text-slate-400 mb-1">Balance</p>
+                                        <p className={`text-2xl font-bold ${account.balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            ${account.balance.toFixed(2)}
+                                        </p>
+                                    </div>
+
+                                    {/* Stats */}
+                                    <div className="flex justify-between text-sm pt-4 border-t border-slate-700">
                                         <div>
-                                            <h3 className="text-lg font-bold text-white">{account.name}</h3>
-                                            <p className="text-sm text-slate-400">{account.type}</p>
+                                            <p className="text-slate-400">Ingresos</p>
+                                            <p className="text-green-400 font-medium">${account.income.toFixed(2)}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-slate-400">Gastos</p>
+                                            <p className="text-red-400 font-medium">${account.expenses.toFixed(2)}</p>
                                         </div>
                                     </div>
 
-                                    {/* Action Buttons */}
-                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button
-                                            onClick={() => handleEdit(account)}
-                                            className="p-2 hover:bg-slate-700 rounded-lg transition-colors touch-target"
-                                            title="Editar"
-                                        >
-                                            <Edit2 className="w-4 h-4 text-slate-400 hover:text-white" />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(account)}
-                                            className="p-2 hover:bg-slate-700 rounded-lg transition-colors touch-target"
-                                            title="Eliminar"
-                                        >
-                                            <Trash2 className="w-4 h-4 text-slate-400 hover:text-red-400" />
-                                        </button>
-                                    </div>
+                                    {/* Transaction Count */}
+                                    {account._count && (
+                                        <div className="mt-3 text-xs text-slate-500">
+                                            {account._count.transactions} transacción(es)
+                                        </div>
+                                    )}
                                 </div>
-
-                                {/* Balance */}
-                                <div className="mb-4">
-                                    <p className="text-sm text-slate-400 mb-1">Balance</p>
-                                    <p className={`text-2xl font-bold ${account.balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                        ${account.balance.toFixed(2)}
-                                    </p>
-                                </div>
-
-                                {/* Stats */}
-                                <div className="flex justify-between text-sm pt-4 border-t border-slate-700">
-                                    <div>
-                                        <p className="text-slate-400">Ingresos</p>
-                                        <p className="text-green-400 font-medium">${account.income.toFixed(2)}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-slate-400">Gastos</p>
-                                        <p className="text-red-400 font-medium">${account.expenses.toFixed(2)}</p>
-                                    </div>
-                                </div>
-
-                                {/* Transaction Count */}
-                                {account._count && (
-                                    <div className="mt-3 text-xs text-slate-500">
-                                        {account._count.transactions} transacción(es)
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    </>
                 )}
 
                 {/* Modals */}

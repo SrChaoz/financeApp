@@ -36,9 +36,9 @@ interface BudgetWithSpending extends Budget {
 }
 
 const COLORS = [
-    '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6',
-    '#ef4444', '#14b8a6', '#f97316', '#6366f1', '#84cc16',
-    '#a855f7', '#06b6d4'
+    '#6366f1', '#10b981', '#f43f5e', '#f59e0b', '#06b6d4',
+    '#14b8a6', '#84cc16', '#f97316', '#a855f7', '#ec4899',
+    '#8b5cf6', '#3b82f6'
 ]
 
 export default function BudgetsPage() {
@@ -154,22 +154,27 @@ export default function BudgetsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         )
     }
 
     return (
         <PullToRefresh onRefresh={fetchBudgets}>
-            <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
+            <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl pb-24 md:pb-8">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">Presupuestos</h1>
+                </div>
+
                 {/* Summary Cards */}
                 {exceededBudgets.length > 0 && (
-                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
+                    <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl">
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                            <AlertTriangle className="w-5 h-5 text-rose-400 mt-0.5 flex-shrink-0" />
                             <div>
-                                <h3 className="text-red-400 font-bold mb-1">¡Presupuesto Excedido!</h3>
-                                <p className="text-red-300 text-sm">
+                                <h3 className="text-rose-400 font-bold mb-1">¡Presupuesto Excedido!</h3>
+                                <p className="text-rose-300 text-sm">
                                     Has excedido el límite en {exceededBudgets.length} categoría(s): {' '}
                                     {exceededBudgets.map(b => b.category).join(', ')}
                                 </p>
@@ -179,12 +184,12 @@ export default function BudgetsPage() {
                 )}
 
                 {warningBudgets.length > 0 && exceededBudgets.length === 0 && (
-                    <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/50 rounded-lg">
+                    <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                            <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
                             <div>
-                                <h3 className="text-yellow-400 font-bold mb-1">Advertencia</h3>
-                                <p className="text-yellow-300 text-sm">
+                                <h3 className="text-amber-400 font-bold mb-1">Advertencia</h3>
+                                <p className="text-amber-300 text-sm">
                                     Estás cerca del límite en {warningBudgets.length} categoría(s): {' '}
                                     {warningBudgets.map(b => b.category).join(', ')}
                                 </p>
@@ -193,144 +198,166 @@ export default function BudgetsPage() {
                     </div>
                 )}
 
-                {/* Summary */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Presupuesto Total</h3>
-                        <p className="text-3xl font-bold text-white">${totalBudget.toFixed(2)}</p>
-                    </div>
+                {/* Compact Summary Bar */}
+                <div className="card-premium p-4 mb-6 bg-gradient-to-br from-zinc-900 to-zinc-950">
+                    <div className="grid grid-cols-3 divide-x divide-zinc-800">
+                        {/* Total Budget */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <PieChart className="w-3 h-3 text-primary" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Presupuesto</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-white">${totalBudget.toFixed(2)}</p>
+                        </div>
 
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Total Gastado</h3>
-                        <p className={`text-3xl font-bold ${overallPercentage >= 100 ? 'text-red-400' :
-                            overallPercentage >= 80 ? 'text-yellow-400' : 'text-green-400'
-                            }`}>
-                            ${totalSpent.toFixed(2)}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">{overallPercentage.toFixed(1)}% del total</p>
-                    </div>
+                        {/* Total Spent */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <TrendingUp className="w-3 h-3 text-rose-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Gastado</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-rose-400">${totalSpent.toFixed(2)}</p>
+                        </div>
 
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Disponible</h3>
-                        <p className={`text-3xl font-bold ${totalRemaining >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            ${totalRemaining.toFixed(2)}
-                        </p>
+                        {/* Remaining */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Restante</p>
+                            </div>
+                            <p className={`text-2xl md:text-3xl font-bold ${totalRemaining >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                ${totalRemaining.toFixed(2)}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
+                {/* Budgets List */}
                 {budgets.length === 0 ? (
-                    <div className="glass-effect rounded-2xl p-12 text-center">
-                        <div className="w-16 h-16 rounded-full bg-violet-600/20 flex items-center justify-center mx-auto mb-4">
-                            <PieChart className="w-8 h-8 text-violet-400" />
+                    <div className="card-premium p-12 text-center">
+                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20">
+                            <PieChart className="w-8 h-8 text-primary" />
                         </div>
                         <h3 className="text-xl font-bold text-white mb-2">No hay presupuestos aún</h3>
-                        <p className="text-slate-400 mb-6">Crea tu primer presupuesto para controlar tus gastos</p>
+                        <p className="text-muted mb-6">Crea tu primer presupuesto para controlar tus gastos</p>
                         <button
                             onClick={() => setShowModal(true)}
-                            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all"
+                            className="px-6 py-3 bg-gradient-primary hover:shadow-glow-primary text-white rounded-lg transition-all font-semibold shadow-lg active:scale-[0.98]"
                         >
                             Crear Primer Presupuesto
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                        {/* Budgets List */}
-                        <div className="lg:col-span-2 space-y-3 md:space-y-4">
-                            {budgets.map((budget) => {
-                                const isExceeded = budget.percentage >= 100
-                                const isWarning = budget.percentage >= 80 && budget.percentage < 100
-                                const isGood = budget.percentage < 80
+                    <>
+                        {/* Section Header with Add Button */}
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-lg font-bold text-white">Mis Presupuestos</h2>
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-indigo-500 to-violet-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] text-white rounded-xl transition-all font-medium shadow-lg active:scale-95"
+                            >
+                                <Plus className="w-4 h-4" />
+                                <span className="hidden sm:inline">Nuevo Presupuesto</span>
+                            </button>
+                        </div>
 
-                                return (
-                                    <div
-                                        key={budget.id}
-                                        className={`glass-effect rounded-xl p-4 md:p-6 transition-all ${isExceeded ? 'border-2 border-red-500/50' :
-                                            isWarning ? 'border-2 border-yellow-500/50' : ''
-                                            }`}
-                                    >
-                                        {/* Header */}
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div>
-                                                <h3 className="text-lg font-bold text-white mb-1">{budget.category}</h3>
-                                                <p className="text-sm text-slate-400">
-                                                    Límite: ${parseFloat(budget.limitAmount).toFixed(2)}
-                                                </p>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(budget)}
-                                                    className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
-                                                    title="Editar"
-                                                >
-                                                    <Edit2 className="w-4 h-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(budget)}
-                                                    className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
-                                                    title="Eliminar"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                            {/* Budgets List */}
+                            <div className="lg:col-span-2 space-y-3 md:space-y-4">
+                                {budgets.map((budget) => {
+                                    const isExceeded = budget.percentage >= 100
+                                    const isWarning = budget.percentage >= 80 && budget.percentage < 100
+                                    const isGood = budget.percentage < 80
 
-                                        {/* Progress Bar */}
-                                        <div className="mb-3">
-                                            <div className="flex items-center justify-between text-sm mb-2">
-                                                <span className="text-slate-400">Gastado</span>
-                                                <span className={`font-bold ${isExceeded ? 'text-red-400' :
-                                                    isWarning ? 'text-yellow-400' : 'text-green-400'
+                                    return (
+                                        <div
+                                            key={budget.id}
+                                            className={`card-premium p-4 md:p-6 transition-all ${isExceeded ? 'border-2 border-rose-500/50' :
+                                                isWarning ? 'border-2 border-amber-500/50' : ''
+                                                }`}
+                                        >
+                                            {/* Header */}
+                                            <div className="flex items-start justify-between mb-4">
+                                                <div>
+                                                    <h3 className="text-lg font-bold text-white mb-1">{budget.category}</h3>
+                                                    <p className="text-sm text-slate-400">
+                                                        Límite: ${parseFloat(budget.limitAmount).toFixed(2)}
+                                                    </p>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => handleEdit(budget)}
+                                                        className="touch-target bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+                                                        title="Editar"
+                                                    >
+                                                        <Edit2 className="w-4 h-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(budget)}
+                                                        className="touch-target bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg transition-all"
+                                                        title="Eliminar"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-3">
+                                                <div className="flex items-center justify-between text-sm mb-2">
+                                                    <span className="text-muted">Gastado</span>
+                                                    <span className={`font-bold ${isExceeded ? 'text-rose-400' :
+                                                        isWarning ? 'text-amber-400' : 'text-emerald-400'
+                                                        }`}>
+                                                        ${budget.spent.toFixed(2)} ({budget.percentage.toFixed(1)}%)
+                                                    </span>
+                                                </div>
+                                                <div className="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full transition-all duration-500 ${isExceeded ? 'bg-rose-500' :
+                                                            isWarning ? 'bg-amber-500' : 'bg-emerald-500'
+                                                            }`}
+                                                        style={{ width: `${Math.min(budget.percentage, 100)}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
+                                                <div className="flex items-center gap-2">
+                                                    {isExceeded ? (
+                                                        <>
+                                                            <AlertTriangle className="w-4 h-4 text-rose-400" />
+                                                            <span className="text-sm text-rose-400 font-medium">Excedido</span>
+                                                        </>
+                                                    ) : isWarning ? (
+                                                        <>
+                                                            <TrendingUp className="w-4 h-4 text-amber-400" />
+                                                            <span className="text-sm text-amber-400 font-medium">Cerca del límite</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                                            <span className="text-sm text-emerald-400 font-medium">Bajo control</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                                <span className={`text-sm font-medium ${budget.remaining >= 0 ? 'text-muted' : 'text-rose-400'
                                                     }`}>
-                                                    ${budget.spent.toFixed(2)} ({budget.percentage.toFixed(1)}%)
+                                                    {budget.remaining >= 0 ? 'Disponible: ' : 'Excedido: '}
+                                                    ${Math.abs(budget.remaining).toFixed(2)}
                                                 </span>
                                             </div>
-                                            <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full transition-all duration-500 ${isExceeded ? 'bg-red-500' :
-                                                        isWarning ? 'bg-yellow-500' : 'bg-green-500'
-                                                        }`}
-                                                    style={{ width: `${Math.min(budget.percentage, 100)}%` }}
-                                                />
-                                            </div>
                                         </div>
+                                    )
+                                })}
+                            </div>
 
-                                        {/* Status */}
-                                        <div className="flex items-center justify-between pt-3 border-t border-slate-700">
-                                            <div className="flex items-center gap-2">
-                                                {isExceeded ? (
-                                                    <>
-                                                        <AlertTriangle className="w-4 h-4 text-red-400" />
-                                                        <span className="text-sm text-red-400 font-medium">Excedido</span>
-                                                    </>
-                                                ) : isWarning ? (
-                                                    <>
-                                                        <TrendingUp className="w-4 h-4 text-yellow-400" />
-                                                        <span className="text-sm text-yellow-400 font-medium">Cerca del límite</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <CheckCircle2 className="w-4 h-4 text-green-400" />
-                                                        <span className="text-sm text-green-400 font-medium">Bajo control</span>
-                                                    </>
-                                                )}
-                                            </div>
-                                            <span className={`text-sm font-medium ${budget.remaining >= 0 ? 'text-slate-400' : 'text-red-400'
-                                                }`}>
-                                                {budget.remaining >= 0 ? 'Disponible: ' : 'Excedido: '}
-                                                ${Math.abs(budget.remaining).toFixed(2)}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                            {/* Expense Distribution Chart - Hidden on mobile, visible on desktop */}
+                            <div className="hidden md:block card-premium p-4 md:p-6">
+                                <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">Distribución de Gastos</h2>
+                                <BudgetDistributionChart chartData={chartData} />
+                            </div>
                         </div>
-
-                        {/* Expense Distribution Chart - Hidden on mobile, visible on desktop */}
-                        <div className="hidden md:block glass-effect rounded-xl p-4 md:p-6">
-                            <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">Distribución de Gastos</h2>
-                            <BudgetDistributionChart chartData={chartData} />
-                        </div>
-                    </div>
+                    </>
                 )}
 
                 {/* Modals */}
@@ -353,7 +380,7 @@ export default function BudgetsPage() {
                     confirmText="Eliminar"
                     loading={deleteLoading}
                 />
-            </div>
-        </PullToRefresh>
+            </div >
+        </PullToRefresh >
     )
 }

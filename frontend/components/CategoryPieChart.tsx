@@ -17,8 +17,8 @@ const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'
 
 export default function CategoryPieChart({ data }: CategoryPieChartProps) {
     return (
-        <div className="glass-effect rounded-2xl p-4 md:p-6">
-            <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">Gastos por Categoría</h2>
+        <div className="card-premium p-6">
+            <h2 className="text-lg font-bold text-white mb-6">Gastos por Categoría</h2>
             {data.length > 0 ? (
                 <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
@@ -27,10 +27,11 @@ export default function CategoryPieChart({ data }: CategoryPieChartProps) {
                             cx="50%"
                             cy="50%"
                             labelLine={false}
-                            label={({ name, percent }) => window.innerWidth >= 640 ? `${name}: ${(percent * 100).toFixed(0)}%` : `${(percent * 100).toFixed(0)}%`}
+                            label={({ name, percent }) => window.innerWidth >= 640 ? `${name}` : `${(percent * 100).toFixed(0)}%`}
                             outerRadius={window.innerWidth >= 640 ? 100 : 80}
                             fill="#8884d8"
                             dataKey="value"
+                            stroke="none"
                         >
                             {data.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -38,18 +39,24 @@ export default function CategoryPieChart({ data }: CategoryPieChartProps) {
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#1e293b',
-                                border: '1px solid #334155',
-                                borderRadius: '8px'
+                                backgroundColor: '#18181b', // Surface
+                                border: '1px solid #27272a', // Border
+                                borderRadius: '12px',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
                             }}
-                            formatter={(value: any) => `$${value.toFixed(2)}`}
+                            itemStyle={{ color: '#fff' }}
+                            formatter={(value: any) => [`$${value.toFixed(2)}`, '']}
+                            labelStyle={{ color: '#a1a1aa' }}
                         />
-                        <Legend />
+                        <Legend
+                            iconType="circle"
+                            wrapperStyle={{ paddingTop: '20px' }}
+                        />
                     </PieChart>
                 </ResponsiveContainer>
             ) : (
                 <div className="h-[250px] flex items-center justify-center">
-                    <p className="text-slate-400">No hay gastos registrados</p>
+                    <p className="text-muted">No hay gastos registrados</p>
                 </div>
             )}
         </div>

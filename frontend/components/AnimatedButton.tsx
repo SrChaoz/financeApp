@@ -20,7 +20,7 @@ export default function AnimatedButton({
     const baseClasses = 'relative overflow-hidden transition-all duration-200 px-4 py-2 rounded-lg font-medium'
 
     const variantClasses = {
-        primary: 'bg-violet-600 hover:bg-violet-700 text-white',
+        primary: 'bg-primary hover:bg-primary/90 text-white',
         secondary: 'bg-slate-700 hover:bg-slate-600 text-white',
         danger: 'bg-red-600 hover:bg-red-700 text-white',
     }

@@ -135,15 +135,20 @@ export default function RemindersPage() {
 
     return (
         <PullToRefresh onRefresh={fetchReminders}>
-            <div className="container mx-auto px-4 py-6 md:py-8 max-w-7xl">
+            <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl pb-24 md:pb-8">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">Recordatorios</h1>
+                </div>
+
                 {/* Summary Cards */}
                 {overdueReminders.length > 0 && (
-                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
+                    <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl">
                         <div className="flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                            <AlertCircle className="w-5 h-5 text-rose-400 mt-0.5 flex-shrink-0" />
                             <div>
-                                <h3 className="text-red-400 font-bold mb-1">¡Recordatorios Vencidos!</h3>
-                                <p className="text-red-300 text-sm">
+                                <h3 className="text-rose-400 font-bold mb-1">¡Recordatorios Vencidos!</h3>
+                                <p className="text-rose-300 text-sm">
                                     Tienes {overdueReminders.length} recordatorio(s) vencido(s)
                                 </p>
                             </div>
@@ -151,19 +156,35 @@ export default function RemindersPage() {
                     </div>
                 )}
 
-                {/* Summary */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Total Activos</h3>
-                        <p className="text-3xl font-bold text-white">{activeReminders.length}</p>
-                    </div>
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Próximos</h3>
-                        <p className="text-3xl font-bold text-blue-400">{upcomingReminders.length}</p>
-                    </div>
-                    <div className="glass-effect rounded-xl p-4 md:p-6">
-                        <h3 className="text-slate-400 text-sm font-medium mb-2">Vencidos</h3>
-                        <p className="text-3xl font-bold text-red-400">{overdueReminders.length}</p>
+                {/* Compact Summary Bar */}
+                <div className="card-premium p-4 mb-6 bg-gradient-to-br from-zinc-900 to-zinc-950">
+                    <div className="grid grid-cols-3 divide-x divide-zinc-800">
+                        {/* Total Active */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Bell className="w-3 h-3 text-primary" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Activos</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-white">{activeReminders.length}</p>
+                        </div>
+
+                        {/* Upcoming */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Calendar className="w-3 h-3 text-blue-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Próximos</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-blue-400">{upcomingReminders.length}</p>
+                        </div>
+
+                        {/* Overdue */}
+                        <div className="px-4 first:pl-0 last:pr-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <AlertCircle className="w-3 h-3 text-rose-500" />
+                                <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Vencidos</p>
+                            </div>
+                            <p className="text-2xl md:text-3xl font-bold text-rose-400">{overdueReminders.length}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -183,151 +204,165 @@ export default function RemindersPage() {
                         </button>
                     </div>
                 ) : (
-                    <div className="space-y-4">
-                        {/* Overdue Reminders */}
-                        {overdueReminders.length > 0 && (
-                            <div>
-                                <h2 className="text-lg font-bold text-white mb-4">Vencidos</h2>
-                                <div className="space-y-3">
-                                    {overdueReminders.map((reminder) => {
-                                        const status = getDueDateStatus(reminder.dueDate)
+                    <>
+                        {/* Section Header with Add Button */}
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-lg font-bold text-white">Mis Recordatorios</h2>
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-indigo-500 to-violet-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] text-white rounded-xl transition-all font-medium shadow-lg active:scale-95"
+                            >
+                                <Plus className="w-4 h-4" />
+                                <span className="hidden sm:inline">Nuevo Recordatorio</span>
+                            </button>
+                        </div>
 
-                                        return (
-                                            <SwipeableItem
-                                                key={reminder.id}
-                                                onEdit={() => handleMarkAsPaid(reminder)}
-                                                onDelete={() => handleDelete(reminder)}
-                                                editColor="bg-green-600"
-                                            >
-                                                <div className="glass-effect rounded-xl p-4 md:p-6 border-2 border-red-500/50">
-                                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                                                        <div className="flex-1">
-                                                            <div className="flex items-start gap-3 mb-2">
-                                                                <Bell className="w-5 h-5 text-red-400 mt-1" />
-                                                                <div>
-                                                                    <h3 className="text-lg font-bold text-white">{reminder.title}</h3>
-                                                                    <p className="text-sm text-slate-400">{reminder.category}</p>
+                        <div className="space-y-4">
+                            {/* Overdue Reminders */}
+                            {overdueReminders.length > 0 && (
+                                <div>
+                                    <h2 className="text-lg font-bold text-white mb-4">Vencidos</h2>
+                                    <div className="space-y-3">
+                                        {overdueReminders.map((reminder) => {
+                                            const status = getDueDateStatus(reminder.dueDate)
+
+                                            return (
+                                                <SwipeableItem
+                                                    key={reminder.id}
+                                                    onEdit={() => handleMarkAsPaid(reminder)}
+                                                    onDelete={() => handleDelete(reminder)}
+                                                    editColor="bg-green-600"
+                                                >
+                                                    <div className="glass-effect rounded-xl p-4 md:p-6 border-2 border-red-500/50">
+                                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-start gap-3 mb-2">
+                                                                    <Bell className="w-5 h-5 text-red-400 mt-1" />
+                                                                    <div>
+                                                                        <h3 className="text-lg font-bold text-white">{reminder.title}</h3>
+                                                                        <p className="text-sm text-slate-400">{reminder.category}</p>
+                                                                    </div>
+                                                                </div>
+                                                                {reminder.notes && (
+                                                                    <p className="text-sm text-slate-400 ml-8">{reminder.notes}</p>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="flex items-center gap-4">
+                                                                {reminder.amount && (
+                                                                    <span className="text-lg font-bold text-white">${parseFloat(reminder.amount).toFixed(2)}</span>
+                                                                )}
+                                                                <div className="flex gap-2 md:hidden">
+                                                                    <button
+                                                                        onClick={() => handleEdit(reminder)}
+                                                                        className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
+                                                                    >
+                                                                        <Edit2 className="w-4 h-4" />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDelete(reminder)}
+                                                                        className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                            {reminder.notes && (
-                                                                <p className="text-sm text-slate-400 ml-8">{reminder.notes}</p>
-                                                            )}
                                                         </div>
 
-                                                        <div className="flex items-center gap-4">
-                                                            {reminder.amount && (
-                                                                <span className="text-lg font-bold text-white">${parseFloat(reminder.amount).toFixed(2)}</span>
-                                                            )}
-                                                            <div className="flex gap-2 md:hidden">
-                                                                <button
-                                                                    onClick={() => handleEdit(reminder)}
-                                                                    className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
-                                                                >
-                                                                    <Edit2 className="w-4 h-4" />
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => handleDelete(reminder)}
-                                                                    className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
-                                                                >
-                                                                    <Trash2 className="w-4 h-4" />
-                                                                </button>
+                                                        <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-slate-700">
+                                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
+                                                                {status.label}
+                                                            </span>
+                                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                                <Calendar className="w-4 h-4" />
+                                                                {format(new Date(reminder.dueDate), "d 'de' MMMM, yyyy", { locale: es })}
+                                                            </div>
+                                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                                <Clock className="w-4 h-4" />
+                                                                {FREQUENCY_LABELS[reminder.frequency]}
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-slate-700">
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
-                                                            {status.label}
-                                                        </span>
-                                                        <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                            <Calendar className="w-4 h-4" />
-                                                            {format(new Date(reminder.dueDate), "d 'de' MMMM, yyyy", { locale: es })}
-                                                        </div>
-                                                        <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                            <Clock className="w-4 h-4" />
-                                                            {FREQUENCY_LABELS[reminder.frequency]}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </SwipeableItem>
-                                        )
-                                    })}
+                                                </SwipeableItem>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {/* Upcoming Reminders */}
-                        {upcomingReminders.length > 0 && (
-                            <div className={overdueReminders.length > 0 ? 'mt-8' : ''}>
-                                <h2 className="text-lg font-bold text-white mb-4">Próximos</h2>
-                                <div className="space-y-3">
-                                    {upcomingReminders.map((reminder) => {
-                                        const status = getDueDateStatus(reminder.dueDate)
+                            {/* Upcoming Reminders */}
+                            {upcomingReminders.length > 0 && (
+                                <div className={overdueReminders.length > 0 ? 'mt-8' : ''}>
+                                    <h2 className="text-lg font-bold text-white mb-4">Próximos</h2>
+                                    <div className="space-y-3">
+                                        {upcomingReminders.map((reminder) => {
+                                            const status = getDueDateStatus(reminder.dueDate)
 
-                                        return (
-                                            <SwipeableItem
-                                                key={reminder.id}
-                                                onEdit={() => handleMarkAsPaid(reminder)}
-                                                onDelete={() => handleDelete(reminder)}
-                                                editColor="bg-green-600"
-                                            >
-                                                <div className="glass-effect rounded-xl p-4 md:p-6">
-                                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                                                        <div className="flex-1">
-                                                            <div className="flex items-start gap-3 mb-2">
-                                                                <Bell className="w-5 h-5 text-violet-400 mt-1" />
-                                                                <div>
-                                                                    <h3 className="text-lg font-bold text-white">{reminder.title}</h3>
-                                                                    <p className="text-sm text-slate-400">{reminder.category}</p>
+                                            return (
+                                                <SwipeableItem
+                                                    key={reminder.id}
+                                                    onEdit={() => handleMarkAsPaid(reminder)}
+                                                    onDelete={() => handleDelete(reminder)}
+                                                    editColor="bg-green-600"
+                                                >
+                                                    <div className="glass-effect rounded-xl p-4 md:p-6">
+                                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-start gap-3 mb-2">
+                                                                    <Bell className="w-5 h-5 text-violet-400 mt-1" />
+                                                                    <div>
+                                                                        <h3 className="text-lg font-bold text-white">{reminder.title}</h3>
+                                                                        <p className="text-sm text-slate-400">{reminder.category}</p>
+                                                                    </div>
+                                                                </div>
+                                                                {reminder.notes && (
+                                                                    <p className="text-sm text-slate-400 ml-8">{reminder.notes}</p>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="flex items-center gap-4">
+                                                                {reminder.amount && (
+                                                                    <span className="text-lg font-bold text-white">${parseFloat(reminder.amount).toFixed(2)}</span>
+                                                                )}
+                                                                <div className="flex gap-2 md:hidden">
+                                                                    <button
+                                                                        onClick={() => handleEdit(reminder)}
+                                                                        className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
+                                                                    >
+                                                                        <Edit2 className="w-4 h-4" />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDelete(reminder)}
+                                                                        className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                            {reminder.notes && (
-                                                                <p className="text-sm text-slate-400 ml-8">{reminder.notes}</p>
-                                                            )}
                                                         </div>
 
-                                                        <div className="flex items-center gap-4">
-                                                            {reminder.amount && (
-                                                                <span className="text-lg font-bold text-white">${parseFloat(reminder.amount).toFixed(2)}</span>
-                                                            )}
-                                                            <div className="flex gap-2 md:hidden">
-                                                                <button
-                                                                    onClick={() => handleEdit(reminder)}
-                                                                    className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
-                                                                >
-                                                                    <Edit2 className="w-4 h-4" />
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => handleDelete(reminder)}
-                                                                    className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
-                                                                >
-                                                                    <Trash2 className="w-4 h-4" />
-                                                                </button>
+                                                        <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-slate-700">
+                                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
+                                                                {status.label}
+                                                            </span>
+                                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                                <Calendar className="w-4 h-4" />
+                                                                {format(new Date(reminder.dueDate), "d 'de' MMMM, yyyy", { locale: es })}
+                                                            </div>
+                                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                                <Clock className="w-4 h-4" />
+                                                                {FREQUENCY_LABELS[reminder.frequency]}
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-slate-700">
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
-                                                            {status.label}
-                                                        </span>
-                                                        <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                            <Calendar className="w-4 h-4" />
-                                                            {format(new Date(reminder.dueDate), "d 'de' MMMM, yyyy", { locale: es })}
-                                                        </div>
-                                                        <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                            <Clock className="w-4 h-4" />
-                                                            {FREQUENCY_LABELS[reminder.frequency]}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </SwipeableItem>
-                                        )
-                                    })}
+                                                </SwipeableItem>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    </>
                 )}
 
                 {/* Modals */}

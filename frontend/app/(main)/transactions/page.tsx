@@ -138,7 +138,7 @@ export default function TransactionsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         )
     }
@@ -146,124 +146,158 @@ export default function TransactionsPage() {
     return (
         <>
             <PullToRefresh onRefresh={fetchData}>
-                <div className="container mx-auto px-4 py-8 max-w-7xl">
-                    {/* Search and Filters */}
-                    {/* Summary Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                        <div className="glass-effect rounded-xl p-4 md:p-6">
-                            <p className="text-slate-400 text-xs md:text-sm mb-1">Total Transacciones</p>
-                            <p className="text-xl md:text-2xl font-bold text-white">{filteredTransactions.length}</p>
-                        </div>
-                        <div className="glass-effect rounded-xl p-4 md:p-6">
-                            <p className="text-slate-400 text-xs md:text-sm mb-1">Ingresos</p>
-                            <p className="text-xl md:text-2xl font-bold text-green-400">${totalIncome.toFixed(2)}</p>
-                        </div>
-                        <div className="glass-effect rounded-xl p-4 md:p-6">
-                            <p className="text-slate-400 text-xs md:text-sm mb-1">Gastos</p>
-                            <p className="text-xl md:text-2xl font-bold text-red-400">${totalExpenses.toFixed(2)}</p>
-                        </div>
-                    </div>
+                <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl pb-24 md:pb-8">
+                    {/* Header with Search and Filter Button */}
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                        <h1 className="text-2xl md:text-3xl font-bold text-white">Transacciones</h1>
 
-                    {/* Filters - Collapsible on Mobile */}
-                    <div className="glass-effect rounded-xl p-4 md:p-6 mb-6 md:mb-8">
-                        <button
-                            onClick={() => setShowFilters(!showFilters)}
-                            className="flex items-center justify-between w-full md:hidden mb-4"
-                        >
-                            <span className="font-medium text-white flex items-center gap-2">
-                                <Filter className="w-4 h-4" />
-                                Filtros
-                            </span>
-                            <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform ${showFilters ? 'rotate-90' : ''}`} />
-                        </button>
-
-                        <div className={`space-y-4 ${showFilters ? 'block' : 'hidden md:block'}`}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {/* Search */}
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                    <input
-                                        type="text"
-                                        placeholder="Buscar..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="mobile-input w-full pl-10 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                    />
-                                </div>
-
-                                {/* Type Filter */}
-                                <select
-                                    value={typeFilter}
-                                    onChange={(e) => setTypeFilter(e.target.value)}
-                                    className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                >
-                                    <option value="">Todos los tipos</option>
-                                    <option value="INCOME">Ingresos</option>
-                                    <option value="EXPENSE">Gastos</option>
-                                </select>
-
-                                {/* Category Filter */}
-                                <select
-                                    value={categoryFilter}
-                                    onChange={(e) => setCategoryFilter(e.target.value)}
-                                    className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                >
-                                    <option value="">Todas las categorías</option>
-                                    {categories.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
-                                    ))}
-                                </select>
-
-                                {/* Account Filter */}
-                                <select
-                                    value={accountFilter}
-                                    onChange={(e) => setAccountFilter(e.target.value)}
-                                    className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                >
-                                    <option value="">Todas las cuentas</option>
-                                    {accounts.map(acc => (
-                                        <option key={acc.id} value={acc.id}>{acc.name}</option>
-                                    ))}
-                                </select>
+                        {/* Search and Filter Toggle */}
+                        <div className="flex items-center gap-3">
+                            {/* Search Bar */}
+                            <div className="relative flex-1 md:w-64">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-2 bg-zinc-900/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm placeholder-zinc-600"
+                                />
                             </div>
 
-                            {/* Date Range */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-slate-400 text-sm mb-2">Desde</label>
-                                    <input
-                                        type="date"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-slate-400 text-sm mb-2">Hasta</label>
-                                    <input
-                                        type="date"
-                                        value={endDate}
-                                        onChange={(e) => setEndDate(e.target.value)}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
-                                    />
-                                </div>
-                            </div>
-
+                            {/* Filter Button */}
                             <button
-                                onClick={clearFilters}
-                                className="w-full md:w-auto px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all text-sm"
+                                onClick={() => setShowFilters(!showFilters)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all ${showFilters
+                                    ? 'bg-primary/20 border-primary/30 text-primary'
+                                    : 'bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                                    }`}
                             >
-                                Limpiar Filtros
+                                <Filter className="w-4 h-4" />
+                                <span className="text-sm font-medium hidden sm:inline">Filtros</span>
                             </button>
                         </div>
                     </div>
+
+                    {/* Compact Summary Bar */}
+                    <div className="card-premium p-4 mb-6 bg-gradient-to-br from-zinc-900 to-zinc-950">
+                        <div className="grid grid-cols-3 divide-x divide-zinc-800">
+                            {/* Total Transactions */}
+                            <div className="px-4 first:pl-0 last:pr-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                                    <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Total</p>
+                                </div>
+                                <p className="text-2xl md:text-3xl font-bold text-white">{filteredTransactions.length}</p>
+                            </div>
+
+                            {/* Income */}
+                            <div className="px-4 first:pl-0 last:pr-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <ArrowUpRight className="w-3 h-3 text-emerald-500" />
+                                    <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Ingresos</p>
+                                </div>
+                                <p className="text-2xl md:text-3xl font-bold text-emerald-400">${totalIncome.toFixed(2)}</p>
+                            </div>
+
+                            {/* Expenses */}
+                            <div className="px-4 first:pl-0 last:pr-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <ArrowDownRight className="w-3 h-3 text-rose-500" />
+                                    <p className="text-zinc-500 text-xs uppercase tracking-wider font-bold">Gastos</p>
+                                </div>
+                                <p className="text-2xl md:text-3xl font-bold text-rose-400">${totalExpenses.toFixed(2)}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Filters Panel - Collapsible */}
+                    {showFilters && (
+                        <div className="card-premium p-4 md:p-6 mb-6 animate-slide-down">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Filtros Avanzados</h3>
+                                <button
+                                    onClick={clearFilters}
+                                    className="text-xs text-primary hover:text-primary/80 font-medium flex items-center gap-1"
+                                >
+                                    <X className="w-3 h-3" />
+                                    Limpiar
+                                </button>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {/* Type Filter */}
+                                    <select
+                                        value={typeFilter}
+                                        onChange={(e) => setTypeFilter(e.target.value)}
+                                        className="w-full px-4 py-2.5 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm"
+                                    >
+                                        <option value="">Todos los tipos</option>
+                                        <option value="INCOME">Ingresos</option>
+                                        <option value="EXPENSE">Gastos</option>
+                                    </select>
+
+                                    {/* Category Filter */}
+                                    <select
+                                        value={categoryFilter}
+                                        onChange={(e) => setCategoryFilter(e.target.value)}
+                                        className="w-full px-4 py-2.5 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm"
+                                    >
+                                        <option value="">Todas las categorías</option>
+                                        {categories.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+
+                                    {/* Account Filter */}
+                                    <select
+                                        value={accountFilter}
+                                        onChange={(e) => setAccountFilter(e.target.value)}
+                                        className="w-full px-4 py-2.5 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm"
+                                    >
+                                        <option value="">Todas las cuentas</option>
+                                        {accounts.map(acc => (
+                                            <option key={acc.id} value={acc.id}>{acc.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Date Range */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-zinc-500 text-xs uppercase tracking-wider font-bold mb-2">Desde</label>
+                                        <input
+                                            type="date"
+                                            value={startDate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                            className="w-full px-4 py-2.5 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-zinc-500 text-xs uppercase tracking-wider font-bold mb-2">Hasta</label>
+                                        <input
+                                            type="date"
+                                            value={endDate}
+                                            onChange={(e) => setEndDate(e.target.value)}
+                                            className="w-full px-4 py-2.5 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-sm"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
 
                     {/* Mobile Card View */}
                     <div className="md:hidden space-y-3 mb-6">
                         {paginatedTransactions.length === 0 ? (
-                            <div className="text-center py-12">
-                                <p className="text-slate-400">No hay transacciones</p>
+                            <div className="text-center py-12 px-4">
+                                <div className="w-16 h-16 rounded-full bg-zinc-900 flex items-center justify-center mx-auto mb-4 border border-zinc-800">
+                                    <Search className="w-6 h-6 text-zinc-600" />
+                                </div>
+                                <p className="text-zinc-400 font-medium">No se encontraron transacciones</p>
+                                <p className="text-muted text-sm mt-1">Intenta ajustar los filtros de búsqueda.</p>
                             </div>
                         ) : (
                             paginatedTransactions.map((transaction) => (
@@ -272,41 +306,44 @@ export default function TransactionsPage() {
                                     onEdit={() => openEditModal(transaction)}
                                     onDelete={() => openDeleteDialog(transaction.id)}
                                 >
-                                    <div className="glass-effect rounded-xl p-4">
+                                    <div className="card-premium p-4 hover:border-zinc-700 transition-colors">
                                         <div className="flex items-start justify-between mb-3">
                                             <div className="flex items-center gap-3">
-                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${transaction.type === 'INCOME' ? 'bg-green-600/20' : 'bg-red-600/20'}`}>
+                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${transaction.type === 'INCOME'
+                                                    ? 'bg-emerald-500/10 border-emerald-500/20'
+                                                    : 'bg-rose-500/10 border-rose-500/20'
+                                                    }`}>
                                                     {transaction.type === 'INCOME' ? (
-                                                        <ArrowUpRight className="w-5 h-5 text-green-400" />
+                                                        <ArrowUpRight className="w-6 h-6 text-emerald-500" />
                                                     ) : (
-                                                        <ArrowDownRight className="w-5 h-5 text-red-400" />
+                                                        <ArrowDownRight className="w-6 h-6 text-rose-500" />
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="text-white font-medium">{transaction.category}</p>
-                                                    <p className="text-slate-400 text-sm">{transaction.account?.name}</p>
+                                                    <p className="text-white font-semibold text-lg">{transaction.category}</p>
+                                                    <p className="text-zinc-400 text-sm">{transaction.account?.name}</p>
                                                 </div>
                                             </div>
-                                            <p className={`text-lg font-bold ${transaction.type === 'INCOME' ? 'text-green-400' : 'text-red-400'}`}>
+                                            <p className={`text-xl font-bold tabular-nums ${transaction.type === 'INCOME' ? 'text-emerald-400' : 'text-rose-400'}`}>
                                                 {transaction.type === 'INCOME' ? '+' : '-'}${parseFloat(transaction.amount).toFixed(2)}
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center justify-between text-sm">
-                                            <div className="flex items-center gap-2 text-slate-400">
-                                                <Calendar className="w-4 h-4" />
+                                        <div className="flex items-center justify-between text-sm border-t border-zinc-800 pt-3 mt-3">
+                                            <div className="flex items-center gap-2 text-muted uppercase tracking-wide text-xs font-medium">
+                                                <Calendar className="w-3.5 h-3.5" />
                                                 {format(new Date(transaction.date), "d 'de' MMMM, yyyy", { locale: es })}
                                             </div>
-                                            <div className="flex gap-2 md:hidden">
+                                            <div className="flex gap-2">
                                                 <button
                                                     onClick={() => openEditModal(transaction)}
-                                                    className="touch-target bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
+                                                    className="p-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
                                                 >
                                                     <Edit2 className="w-4 h-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => openDeleteDialog(transaction.id)}
-                                                    className="touch-target bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
+                                                    className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg transition-all"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
@@ -314,8 +351,8 @@ export default function TransactionsPage() {
                                         </div>
 
                                         {transaction.notes && (
-                                            <p className="text-slate-400 text-sm mt-2 pt-2 border-t border-slate-700">
-                                                {transaction.notes}
+                                            <p className="text-zinc-500 text-sm mt-3 pt-3 border-t border-zinc-800/50 italic">
+                                                "{transaction.notes}"
                                             </p>
                                         )}
                                     </div>
@@ -325,68 +362,73 @@ export default function TransactionsPage() {
                     </div>
 
                     {/* Desktop Table View */}
-                    <div className="hidden md:block glass-effect rounded-xl overflow-hidden mb-6">
+                    <div className="hidden md:block card-premium overflow-hidden mb-6">
                         <div className="overflow-x-auto">
                             <table className="w-full">
-                                <thead className="bg-slate-800/50">
+                                <thead className="bg-zinc-900 border-b border-zinc-800">
                                     <tr>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Fecha</th>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Categoría</th>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Cuenta</th>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Notas</th>
-                                        <th className="px-6 py-4 text-right text-xs font-medium text-slate-400 uppercase">Monto</th>
-                                        <th className="px-6 py-4 text-right text-xs font-medium text-slate-400 uppercase">Acciones</th>
+                                        <th className="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Fecha</th>
+                                        <th className="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Categoría</th>
+                                        <th className="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Cuenta</th>
+                                        <th className="px-6 py-4 text-left text-xs font-bold text-muted uppercase tracking-wider">Notas</th>
+                                        <th className="px-6 py-4 text-right text-xs font-bold text-muted uppercase tracking-wider">Monto</th>
+                                        <th className="px-6 py-4 text-right text-xs font-bold text-muted uppercase tracking-wider">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-800">
+                                <tbody className="divide-y divide-zinc-800">
                                     {paginatedTransactions.length === 0 ? (
                                         <tr>
-                                            <td colSpan={6} className="px-6 py-12 text-center text-slate-400">
-                                                No hay transacciones
+                                            <td colSpan={6} className="px-6 py-12 text-center">
+                                                <div className="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center mx-auto mb-3 border border-zinc-800">
+                                                    <Search className="w-5 h-5 text-zinc-600" />
+                                                </div>
+                                                <p className="text-zinc-400 font-medium">No se encontraron transacciones</p>
                                             </td>
                                         </tr>
                                     ) : (
                                         paginatedTransactions.map((transaction) => (
-                                            <tr key={transaction.id} className="hover:bg-slate-800/30 transition-colors">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                                            <tr key={transaction.id} className="hover:bg-zinc-800/40 transition-colors group">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-300 font-medium">
                                                     {format(new Date(transaction.date), "d 'de' MMM, yyyy", { locale: es })}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${transaction.type === 'INCOME' ? 'bg-green-600/20' : 'bg-red-600/20'
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center border ${transaction.type === 'INCOME' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/20'
                                                             }`}>
                                                             {transaction.type === 'INCOME' ? (
-                                                                <ArrowUpRight className="w-4 h-4 text-green-400" />
+                                                                <ArrowUpRight className="w-4 h-4 text-emerald-500" />
                                                             ) : (
-                                                                <ArrowDownRight className="w-4 h-4 text-red-400" />
+                                                                <ArrowDownRight className="w-4 h-4 text-rose-500" />
                                                             )}
                                                         </div>
                                                         <span className="text-white font-medium">{transaction.category}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-400">
                                                     {transaction.account?.name}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-slate-400 max-w-xs truncate">
+                                                <td className="px-6 py-4 text-sm text-zinc-500 max-w-xs truncate group-hover:text-zinc-400 transition-colors">
                                                     {transaction.notes || '-'}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                    <span className={`text-lg font-bold ${transaction.type === 'INCOME' ? 'text-green-400' : 'text-red-400'
+                                                    <span className={`text-lg font-bold tabular-nums ${transaction.type === 'INCOME' ? 'text-emerald-400' : 'text-rose-400'
                                                         }`}>
                                                         {transaction.type === 'INCOME' ? '+' : '-'}${parseFloat(transaction.amount).toFixed(2)}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                    <div className="flex justify-end gap-2">
+                                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button
                                                             onClick={() => openEditModal(transaction)}
-                                                            className="p-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
+                                                            className="p-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+                                                            title="Editar"
                                                         >
                                                             <Edit2 className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             onClick={() => openDeleteDialog(transaction.id)}
-                                                            className="p-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all"
+                                                            className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg transition-all"
+                                                            title="Eliminar"
                                                         >
                                                             <Trash2 className="w-4 h-4" />
                                                         </button>
@@ -403,25 +445,25 @@ export default function TransactionsPage() {
                     {/* Pagination */}
                     {
                         totalPages > 1 && (
-                            <div className="flex items-center justify-between">
-                                <p className="text-slate-400 text-sm">
-                                    Mostrando {((currentPage - 1) * itemsPerPage) + 1} a {Math.min(currentPage * itemsPerPage, filteredTransactions.length)} de {filteredTransactions.length}
+                            <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
+                                <p className="text-muted text-sm">
+                                    Mostrando <span className="text-white font-medium">{((currentPage - 1) * itemsPerPage) + 1}</span> a <span className="text-white font-medium">{Math.min(currentPage * itemsPerPage, filteredTransactions.length)}</span> de <span className="text-white font-medium">{filteredTransactions.length}</span>
                                 </p>
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                                         disabled={currentPage === 1}
-                                        className="touch-target bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                                        className="p-2 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
                                     >
                                         <ChevronLeft className="w-5 h-5" />
                                     </button>
-                                    <span className="px-4 py-2 text-white">
-                                        {currentPage} / {totalPages}
+                                    <span className="px-4 py-2 text-white bg-zinc-800 rounded-lg font-medium min-w-[3rem] text-center">
+                                        {currentPage}
                                     </span>
                                     <button
                                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                                         disabled={currentPage === totalPages}
-                                        className="touch-target bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                                        className="p-2 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
                                     >
                                         <ChevronRight className="w-5 h-5" />
                                     </button>
@@ -445,8 +487,8 @@ export default function TransactionsPage() {
                         title="Eliminar Transacción"
                         message="¿Estás seguro de que deseas eliminar esta transacción? Esta acción no se puede deshacer."
                     />
-                </div>
-            </PullToRefresh>
+                </div >
+            </PullToRefresh >
         </>
     )
 }

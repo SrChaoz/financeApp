@@ -85,7 +85,7 @@ export default function ProfilePage() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         )
     }
@@ -109,7 +109,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Avatar Section */}
-                    <div className="glass-effect rounded-2xl p-6 md:p-8 mb-6">
+                    <div className="card-premium p-6 md:p-8 mb-6">
                         <div className="flex flex-col md:flex-row items-center gap-6">
                             <Avatar
                                 firstName={profile.firstName}
@@ -123,8 +123,8 @@ export default function ProfilePage() {
                                         ? `${profile.firstName} ${profile.lastName}`
                                         : profile.username}
                                 </h2>
-                                <p className="text-slate-400">@{profile.username}</p>
-                                <p className="text-sm text-slate-500 mt-2">
+                                <p className="text-muted">@{profile.username}</p>
+                                <p className="text-sm text-zinc-500 mt-2">
                                     Miembro desde {format(new Date(profile.createdAt), 'MMMM yyyy', { locale: es })}
                                 </p>
                             </div>
@@ -132,7 +132,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Profile Form */}
-                    <div className="glass-effect rounded-2xl p-6 md:p-8">
+                    <div className="card-premium p-6 md:p-8">
                         <h3 className="text-xl font-bold text-white mb-6">Información Personal</h3>
 
                         <form onSubmit={handleSubmit} className="space-y-5">
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                                         name="firstName"
                                         value={formData.firstName}
                                         onChange={handleChange}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                         placeholder="Tu nombre"
                                     />
                                 </div>
@@ -162,7 +162,7 @@ export default function ProfilePage() {
                                         name="lastName"
                                         value={formData.lastName}
                                         onChange={handleChange}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                         placeholder="Tu apellido"
                                     />
                                 </div>
@@ -178,7 +178,7 @@ export default function ProfilePage() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
+                                    className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600"
                                     placeholder="tu@email.com"
                                 />
                             </div>
@@ -192,7 +192,7 @@ export default function ProfilePage() {
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                                     >
                                         <option value="">Seleccionar...</option>
                                         <option value="Masculino">Masculino</option>
@@ -212,7 +212,7 @@ export default function ProfilePage() {
                                         name="birthDate"
                                         value={formData.birthDate}
                                         onChange={handleChange}
-                                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                                     />
                                 </div>
                             </div>
@@ -220,7 +220,7 @@ export default function ProfilePage() {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="w-full md:w-auto px-6 py-3 bg-gradient-primary hover:shadow-glow-primary text-white rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-semibold shadow-lg active:scale-[0.98]"
                             >
                                 {saving ? (
                                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

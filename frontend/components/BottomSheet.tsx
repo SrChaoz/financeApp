@@ -28,11 +28,11 @@ export default function BottomSheet({
             shouldScaleBackground={false}
         >
             <Drawer.Portal>
-                <Drawer.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" />
-                <Drawer.Content className="fixed bottom-0 left-0 right-0 z-50 flex flex-col bg-slate-900 rounded-t-3xl max-h-[95vh] outline-none">
+                <Drawer.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40" />
+                <Drawer.Content className="fixed bottom-0 left-0 right-0 z-50 flex flex-col bg-surface border-t border-zinc-800 rounded-t-3xl max-h-[95vh] outline-none">
                     {/* Handle bar */}
                     <div className="flex justify-center py-3">
-                        <div className="w-12 h-1.5 bg-slate-700 rounded-full" />
+                        <div className="w-12 h-1.5 bg-zinc-700 rounded-full" />
                     </div>
 
                     {/* Header */}

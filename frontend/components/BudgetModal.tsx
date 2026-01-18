@@ -97,7 +97,7 @@ export default function BudgetModal({ isOpen, onClose, onSuccess, budget }: Budg
                     <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                        className="mobile-input w-full bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                         required
                     >
                         <option value="">Selecciona una categoría</option>
@@ -125,7 +125,7 @@ export default function BudgetModal({ isOpen, onClose, onSuccess, budget }: Budg
                             min="0"
                             value={limitAmount}
                             onChange={(e) => setLimitAmount(e.target.value)}
-                            className="mobile-input w-full pr-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500 text-lg"
+                            className="mobile-input w-full pr-4 bg-zinc-950/50 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder-zinc-600 text-lg"
                             style={{ paddingLeft: '2.5rem' }}
                             placeholder="0.00"
                             required
@@ -155,7 +155,7 @@ export default function BudgetModal({ isOpen, onClose, onSuccess, budget }: Budg
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 py-3 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed touch-target font-medium shadow-lg shadow-violet-600/30"
+                        className="flex-1 py-3 px-4 bg-gradient-primary hover:shadow-glow-primary text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed touch-target font-semibold shadow-lg active:scale-[0.98]"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" />

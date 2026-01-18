@@ -2,16 +2,12 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, CreditCard, Receipt, PieChart, LogOut, Target, Bell, Wallet, MoreHorizontal, User, Plus } from 'lucide-react'
+import { LayoutDashboard, CreditCard, Receipt, PieChart, LogOut, Target, Bell, Wallet, User, Plus, TrendingUp, TrendingDown, MoreHorizontal, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import api from '@/lib/api'
 
-// Dynamically import TransactionModal to reduce initial bundle size
-const TransactionModal = dynamic(() => import('./TransactionModal'), {
-    ssr: false, // Modals don't need SSR
-})
+const TransactionModal = dynamic(() => import('./TransactionModal'), { ssr: false })
 
 const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -23,32 +19,42 @@ const navItems = [
     { label: 'Perfil', href: '/profile', icon: User },
 ]
 
+// ==========================================
+// NUEVO SVG: EFECTO LIQUID (Color Corregido)
+// ==========================================
+const NavBarCurve = () => (
+    <svg
+        viewBox="0 0 375 80"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="absolute bottom-0 left-0 w-full h-[70px] drop-shadow-[0_-5px_10px_rgba(0,0,0,0.3)] z-0"
+        preserveAspectRatio="none"
+    >
+        {/* COLOR CAMBIADO: fill-zinc-900 (Gris oscuro visible) en lugar de 950 (Negro) */}
+        <path
+            d="M0,0 L130,0 C155,0 160,50 187.5,50 C215,50 220,0 245,0 L375,0 V80 H0 Z"
+            className="fill-zinc-900" 
+        />
+    </svg>
+)
+
 export default function Navigation() {
     const pathname = usePathname()
     const router = useRouter()
-    const [showMobileMoreMenu, setShowMobileMoreMenu] = useState(false)
     const [showTransactionModal, setShowTransactionModal] = useState(false)
     const [initialTransactionType, setInitialTransactionType] = useState<'INCOME' | 'EXPENSE'>('EXPENSE')
+    const [showMobileMoreMenu, setShowMobileMoreMenu] = useState(false)
 
-
-
-    // Listen for custom events to open transaction modal
     useEffect(() => {
         const handleOpenModal = (event: any) => {
             const { type } = event.detail
-            if (type) {
-                setInitialTransactionType(type)
-            }
+            if (type) setInitialTransactionType(type)
             setShowTransactionModal(true)
         }
-
         window.addEventListener('openTransactionModal', handleOpenModal)
-        return () => {
-            window.removeEventListener('openTransactionModal', handleOpenModal)
-        }
+        return () => window.removeEventListener('openTransactionModal', handleOpenModal)
     }, [])
 
-    // Don't show navigation on login page
     if (pathname === '/login') return null
 
     const handleLogout = () => {
@@ -58,30 +64,59 @@ export default function Navigation() {
     }
 
     const handleTransactionSuccess = () => {
-        // Trigger a page refresh or data refetch if needed
         window.location.reload()
     }
 
-    // Items to show directly in mobile bottom nav (first 2)
-    const mobileDirectNavItems = navItems.slice(0, 2)
-    // Items to show in the "More" menu
-    const mobileMoreMenuItems = navItems.slice(2)
+    const mobileLeftItems = navItems.slice(0, 2)
+    const mobileRightItems = [navItems[2], { label: 'Más', href: '#', icon: MoreHorizontal }]
+    const mobileMoreItems = navItems.slice(3)
 
     return (
         <>
-            {/* Desktop Sidebar */}
-            <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-64 glass-effect border-r border-slate-800 z-50">
-                <div className="flex flex-col flex-1 p-6">
-                    {/* Logo */}
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
-                            <Wallet className="w-6 h-6 text-white" />
+            {/* DESKTOP SIDEBAR - (Sin cambios) */}
+            <aside className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-64 bg-zinc-950 border-r border-zinc-800 z-50">
+                <div className="flex flex-col h-full p-6">
+                    {/* Logo Section */}
+                    <div className="flex items-center gap-3 mb-12">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow-primary">
+                            <Wallet className="w-7 h-7 text-white" />
                         </div>
-                        <span className="text-xl font-bold text-white">FinanzasPro</span>
+                        <div>
+                            <h1 className="text-xl font-bold text-white tracking-tight">FinanzasPro</h1>
+                            <p className="text-xs text-zinc-500">Gestión Inteligente</p>
+                        </div>
                     </div>
 
-                    {/* Navigation Links (All items for desktop) */}
-                    <nav className="flex-1 space-y-2">
+                    {/* Quick Actions */}
+                    <div className="grid grid-cols-2 gap-2 mb-8">
+                        <button
+                            onClick={() => {
+                                setInitialTransactionType('INCOME')
+                                setShowTransactionModal(true)
+                            }}
+                            className="flex flex-col items-center gap-2 p-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all group"
+                        >
+                            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <TrendingUp className="w-4 h-4 text-emerald-500" />
+                            </div>
+                            <span className="text-xs font-semibold text-emerald-500">Ingreso</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                setInitialTransactionType('EXPENSE')
+                                setShowTransactionModal(true)
+                            }}
+                            className="flex flex-col items-center gap-2 p-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all group"
+                        >
+                            <div className="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <TrendingDown className="w-4 h-4 text-rose-500" />
+                            </div>
+                            <span className="text-xs font-semibold text-rose-500">Gasto</span>
+                        </button>
+                    </div>
+
+                    {/* Navigation Links */}
+                    <nav className="flex-1 space-y-1">
                         {navItems.map((item) => {
                             const Icon = item.icon
                             const isActive = pathname === item.href
@@ -89,13 +124,19 @@ export default function Navigation() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                                        ? 'bg-violet-600 text-white'
-                                        : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative ${isActive
+                                        ? 'bg-primary/10 text-white'
+                                        : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
                                         }`}
                                 >
-                                    <Icon className="w-5 h-5" />
-                                    <span className="font-medium">{item.label}</span>
+                                    {isActive && (
+                                        <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
+                                    )}
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${isActive ? 'bg-primary/20' : 'bg-zinc-900 group-hover:bg-zinc-800'
+                                        }`}>
+                                        <Icon className={`w-5 h-5 ${isActive ? 'text-primary' : ''}`} />
+                                    </div>
+                                    <span className="font-medium text-sm">{item.label}</span>
                                 </Link>
                             )
                         })}
@@ -104,168 +145,157 @@ export default function Navigation() {
                     {/* Logout Button */}
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 transition-all mt-4"
+                        className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all group mt-4"
                     >
-                        <LogOut className="w-5 h-5" />
-                        <span className="font-medium">Cerrar Sesión</span>
+                        <div className="w-10 h-10 rounded-xl bg-zinc-900 group-hover:bg-rose-500/20 flex items-center justify-center transition-all">
+                            <LogOut className="w-5 h-5" />
+                        </div>
+                        <span className="font-medium text-sm">Cerrar Sesión</span>
                     </button>
                 </div>
             </aside>
 
-            {/* Mobile Bottom Navigation */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-effect border-t border-slate-800 z-50">
-                <div className="grid grid-cols-5 items-center h-16 px-2">
-                    {/* First 2 nav items */}
-                    {mobileDirectNavItems.map((item) => {
-                        const Icon = item.icon
-                        const isActive = pathname === item.href
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${isActive
-                                    ? 'text-violet-400'
-                                    : 'text-slate-400'
-                                    }`}
-                            >
-                                <Icon className="w-5 h-5" />
-                                <span className="text-xs font-medium">{item.label}</span>
-                            </Link>
-                        )
-                    })}
+            {/* ========================================================= */}
+            {/* MOBILE NAV: COLOR CORREGIDO */}
+            {/* ========================================================= */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 h-[80px]">
+                
+                <NavBarCurve />
 
-                    {/* Central Add Button */}
-                    <button
-                        onClick={() => setShowTransactionModal(true)}
-                        className="flex flex-col items-center justify-center"
-                    >
-                        <div className="w-14 h-14 -mt-8 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full shadow-lg shadow-violet-500/50 flex items-center justify-center">
-                            <Plus className="w-7 h-7 text-white" />
+                <div className="relative w-full h-full z-10">
+
+                    {/* BOTÓN CENTRAL */}
+                    {/* border-zinc-950 es correcto si tu FONDO DE BODY es negro. 
+                        Esto crea el "recorte" sobre la barra gris (zinc-900). 
+                    */}
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
+                        <button
+                            onClick={() => setShowTransactionModal(true)}
+                            className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:scale-105 active:scale-95 transition-all text-white border-[4px] border-zinc-950"
+                        >
+                            <Plus size={30} strokeWidth={2.5} />
+                        </button>
+                    </div>
+
+                    {/* ICONOS */}
+                    <div className="h-full flex items-end justify-between px-8 pb-4">
+                        
+                        {/* Izquierda */}
+                        <div className="flex items-center gap-6">
+                            {mobileLeftItems.map((item) => {
+                                const Icon = item.icon
+                                const isActive = pathname === item.href
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className="flex flex-col items-center gap-1 w-12 group"
+                                    >
+                                        <div className={`transition-all duration-300 ${isActive ? 'text-indigo-400 -translate-y-1' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                                            <Icon className="w-7 h-7" strokeWidth={isActive ? 2.5 : 2} />
+                                        </div>
+                                        {isActive && (
+                                            <span className="text-[10px] font-medium text-white animate-fade-in absolute -bottom-3">
+                                                {item.label.split(' ')[0]}
+                                            </span>
+                                        )}
+                                    </Link>
+                                )
+                            })}
                         </div>
-                        <span className="text-xs font-medium text-violet-400 mt-1">Agregar</span>
-                    </button>
 
-                    {/* Accounts */}
-                    <Link
-                        href="/accounts"
-                        className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${pathname === '/accounts'
-                            ? 'text-violet-400'
-                            : 'text-slate-400'
-                            }`}
-                    >
-                        <CreditCard className="w-5 h-5" />
-                        <span className="text-xs font-medium">Cuentas</span>
-                    </Link>
+                        {/* Espacio Central */}
+                        <div className="w-20" />
 
-                    {/* More button for mobile */}
-                    <button
-                        onClick={() => setShowMobileMoreMenu(true)}
-                        className={`flex flex-col items-center justify-center gap-1 px-2 py-2 ${showMobileMoreMenu ? 'text-violet-400' : 'text-slate-400'
-                            }`}
-                    >
-                        <MoreHorizontal className="w-5 h-5" />
-                        <span className="text-xs font-medium">Más</span>
-                    </button>
-                </div>
+                        {/* Derecha */}
+                        <div className="flex items-center gap-6">
+                            {mobileRightItems.map((item) => {
+                                const Icon = item.icon
+                                const isActive = pathname === item.href
+                                const isMore = item.label === 'Más'
 
-                {/* Mobile More Menu Modal */}
-                {showMobileMoreMenu && (
-                    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end justify-center" onClick={() => setShowMobileMoreMenu(false)}>
-                        <div className="bg-slate-900/95 backdrop-blur-xl border-t border-slate-700 p-6 w-full max-w-md rounded-t-3xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xl font-bold text-white">Más Opciones</h3>
-                                <button
-                                    onClick={() => setShowMobileMoreMenu(false)}
-                                    className="p-2 hover:bg-slate-800 rounded-lg"
-                                >
-                                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="space-y-3">
-                                {mobileMoreMenuItems.map((item) => {
-                                    const Icon = item.icon
-                                    const isActive = pathname === item.href
-                                    const iconColorClass = item.label === 'Presupuestos'
-                                        ? 'text-purple-400'
-                                        : item.label === 'Metas'
-                                            ? 'text-blue-400'
-                                            : item.label === 'Recordatorios'
-                                                ? 'text-orange-400'
-                                                : 'text-green-400'
-
-                                    const bgColorClass = item.label === 'Presupuestos'
-                                        ? 'bg-purple-500/10'
-                                        : item.label === 'Metas'
-                                            ? 'bg-blue-500/10'
-                                            : item.label === 'Recordatorios'
-                                                ? 'bg-orange-500/10'
-                                                : 'bg-green-500/10'
-
+                                if (isMore) {
                                     return (
-                                        <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            onClick={() => setShowMobileMoreMenu(false)}
-                                            className={`flex items-center gap-4 p-4 rounded-xl ${isActive
-                                                ? 'bg-slate-800 border border-slate-700'
-                                                : 'bg-slate-800/50 hover:bg-slate-800 border border-transparent hover:border-slate-700'
-                                                }`}
+                                        <button
+                                            key={item.label}
+                                            onClick={() => setShowMobileMoreMenu(true)}
+                                            className="flex flex-col items-center gap-1 w-12 group"
                                         >
-                                            <div className={`w-12 h-12 rounded-lg ${bgColorClass} flex items-center justify-center`}>
-                                                <Icon className={`w-6 h-6 ${iconColorClass}`} />
+                                            <div className="text-zinc-500 transition-all group-hover:text-zinc-300">
+                                                <Icon className="w-7 h-7" strokeWidth={2} />
                                             </div>
-                                            <div className="flex-1">
-                                                <span className="text-base font-semibold text-white block">{item.label}</span>
-                                                <span className="text-xs text-slate-400">
-                                                    {item.label === 'Presupuestos' && 'Controla tus gastos'}
-                                                    {item.label === 'Metas' && 'Ahorra para tus objetivos'}
-                                                    {item.label === 'Recordatorios' && 'No olvides tus pagos'}
-                                                    {item.label === 'Perfil' && 'Tu información personal'}
-                                                </span>
-                                            </div>
-                                            <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </Link>
+                                        </button>
                                     )
-                                })}
-                                {/* Logout button */}
-                                <button
-                                    onClick={() => {
-                                        handleLogout()
-                                        setShowMobileMoreMenu(false)
-                                    }}
-                                    className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-red-500/10 border border-transparent hover:border-red-500/30 w-full"
-                                >
-                                    <div className="w-12 h-12 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <LogOut className="w-6 h-6 text-red-400" />
-                                    </div>
-                                    <div className="flex-1 text-left">
-                                        <span className="text-base font-semibold text-white block">Cerrar Sesión</span>
-                                        <span className="text-xs text-slate-400">Salir de tu cuenta</span>
-                                    </div>
-                                    <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" />
-                                    </svg>
-                                </button>
-                            </div>
+                                }
+
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className="flex flex-col items-center gap-1 w-12 group"
+                                    >
+                                        <div className={`transition-all duration-300 ${isActive ? 'text-indigo-400 -translate-y-1' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                                            <Icon className="w-7 h-7" strokeWidth={isActive ? 2.5 : 2} />
+                                        </div>
+                                        {isActive && (
+                                            <span className="text-[10px] font-medium text-white animate-fade-in absolute -bottom-3">
+                                                {item.label.split(' ')[0]}
+                                            </span>
+                                        )}
+                                    </Link>
+                                )
+                            })}
                         </div>
                     </div>
-                )}
+                </div>
             </nav>
 
-            {/* Transaction Modal */}
+            {/* Mobile More Menu Modal */}
+            {showMobileMoreMenu && (
+                <div className="md:hidden fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm" onClick={() => setShowMobileMoreMenu(false)}>
+                    <div className="absolute bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 rounded-t-3xl p-6 animate-slide-up" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-white">Más opciones</h3>
+                            <button
+                                onClick={() => setShowMobileMoreMenu(false)}
+                                className="w-9 h-9 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-all"
+                            >
+                                <X className="w-5 h-5 text-zinc-400" />
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            {mobileMoreItems.map((item) => {
+                                const Icon = item.icon
+                                const isActive = pathname === item.href
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setShowMobileMoreMenu(false)}
+                                        className={`flex items-center gap-3 p-4 rounded-xl transition-all ${isActive
+                                            ? 'bg-primary/10 border border-primary/20'
+                                            : 'bg-zinc-800 border border-zinc-700 hover:bg-zinc-700'
+                                            }`}
+                                    >
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-primary/20' : 'bg-zinc-700'
+                                            }`}>
+                                            <Icon className={`w-5 h-5 ${isActive ? 'text-primary' : 'text-zinc-400'}`} />
+                                        </div>
+                                        <span className={`font-medium text-sm ${isActive ? 'text-white' : 'text-zinc-300'}`}>{item.label}</span>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <TransactionModal
                 isOpen={showTransactionModal}
                 onClose={() => setShowTransactionModal(false)}
                 onSuccess={handleTransactionSuccess}
                 initialType={initialTransactionType}
             />
-
-            {/* Spacer for desktop sidebar */}
-            <div className="hidden md:block md:w-64" />
         </>
     )
 }

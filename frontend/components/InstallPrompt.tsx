@@ -92,9 +92,9 @@ export default function InstallPrompt() {
 
     return (
         <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-50 animate-in slide-in-from-bottom duration-300">
-            <div className="glass-effect rounded-xl p-4 border border-violet-500/20 shadow-xl">
+            <div className="glass-effect rounded-xl p-4 border border-primary/20 shadow-xl">
                 <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-12 h-12 bg-violet-600 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                         <Download className="w-6 h-6 text-white" />
                     </div>
 
@@ -109,7 +109,7 @@ export default function InstallPrompt() {
                         <div className="flex gap-2">
                             <button
                                 onClick={handleInstall}
-                                className="flex-1 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-medium transition-colors"
+                                className="flex-1 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors"
                             >
                                 Instalar
                             </button>

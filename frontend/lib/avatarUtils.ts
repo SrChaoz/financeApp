@@ -28,8 +28,10 @@ export function getInitials(firstName?: string | null, lastName?: string | null,
  */
 export function getAvatarColor(name: string): string {
     const colors = [
-        '#8b5cf6', // violet-600
-        '#a855f7', // purple-600
+        '#6366f1', // primary (indigo)
+        '#10b981', // emerald
+        '#f43f5e', // rose
+        '#f59e0b', // amber
         '#2563eb', // blue-600
         '#0891b2', // cyan-600
         '#0d9488', // teal-600

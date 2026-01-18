@@ -79,32 +79,32 @@ export default function AccountModal({ isOpen, onClose, onSuccess, account }: Ac
         >
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-zinc-400 mb-2">
                         Nombre de la Cuenta *
                     </label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white placeholder-slate-500"
-                        placeholder="Ej: Banco Principal, Efectivo..."
+                        className="w-full px-4 py-4 bg-zinc-900 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-base placeholder-zinc-500"
+                        placeholder="Ej: Banco Principal"
                         required
                         autoFocus
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-zinc-400 mb-2">
                         Tipo de Cuenta *
                     </label>
                     <select
                         value={type}
                         onChange={(e) => setType(e.target.value)}
-                        className="mobile-input w-full bg-slate-800/50 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-600 text-white"
+                        className="w-full px-4 py-4 bg-zinc-900 border border-zinc-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white text-base appearance-none cursor-pointer"
                         required
                     >
                         {ACCOUNT_TYPES.map((accountType) => (
-                            <option key={accountType.value} value={accountType.value}>
+                            <option key={accountType.value} value={accountType.value} className="bg-zinc-900 text-white py-2">
                                 {accountType.label}
                             </option>
                         ))}
@@ -112,7 +112,8 @@ export default function AccountModal({ isOpen, onClose, onSuccess, account }: Ac
                 </div>
 
                 {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm">
+                    <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                         {error}
                     </div>
                 )}
@@ -121,7 +122,7 @@ export default function AccountModal({ isOpen, onClose, onSuccess, account }: Ac
                     <button
                         type="button"
                         onClick={onClose}
-                        className="flex-1 py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-colors touch-target font-medium"
+                        className="flex-1 py-3.5 px-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-xl transition-colors font-medium"
                         disabled={loading}
                     >
                         Cancelar
@@ -129,7 +130,7 @@ export default function AccountModal({ isOpen, onClose, onSuccess, account }: Ac
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex-1 py-3 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed touch-target font-medium shadow-lg shadow-violet-600/30"
+                        className="flex-1 py-3 px-4 bg-gradient-primary hover:shadow-glow-primary text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed touch-target font-semibold shadow-lg active:scale-[0.98]"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" />

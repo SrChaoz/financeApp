@@ -38,7 +38,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-md glass-effect rounded-2xl shadow-2xl animate-in fade-in zoom-in duration-200 my-8">
+            <div className="relative w-full max-w-md bg-surface border border-zinc-800 rounded-2xl shadow-2xl animate-in fade-in zoom-in duration-200 my-8">
                 {/* Header */}
                 {title && (
                     <div className="flex items-center justify-between p-6 border-b border-slate-700">
