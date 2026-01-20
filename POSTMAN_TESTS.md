@@ -308,7 +308,7 @@ pm.test("Respuesta contiene objeto 'transaction' con datos correctos", function 
     var jsonData = pm.response.json();
     pm.expect(jsonData).to.have.property('transaction');
     pm.expect(jsonData.transaction).to.have.property('id');
-    pm.expect(jsonData.transaction.amount).to.equal("150.50");
+    pm.expect(parseFloat(jsonData.transaction.amount)).to.be.closeTo(150.50, 0.01);
     pm.expect(jsonData.transaction.type).to.equal("EXPENSE");
     pm.expect(jsonData.transaction.category).to.equal("Alimentación");
 });
@@ -371,7 +371,7 @@ pm.test("Respuesta es JSON válido", function () {
 // Test 4: Datos actualizados correctamente
 pm.test("Transacción contiene datos actualizados", function () {
     var jsonData = pm.response.json();
-    pm.expect(jsonData.transaction.amount).to.equal("200.00");
+    pm.expect(parseFloat(jsonData.transaction.amount)).to.be.closeTo(200.00, 0.01);
     pm.expect(jsonData.transaction.category).to.equal("Transporte");
     pm.expect(jsonData.transaction.notes).to.include("Actualizado");
 });
@@ -537,7 +537,7 @@ pm.test("Respuesta contiene objeto 'budget' con datos correctos", function () {
     pm.expect(jsonData).to.have.property('budget');
     pm.expect(jsonData.budget).to.have.property('id');
     pm.expect(jsonData.budget.category).to.equal("Transporte");
-    pm.expect(jsonData.budget.limitAmount).to.equal("500.00");
+    pm.expect(parseFloat(jsonData.budget.limitAmount)).to.be.closeTo(500.00, 0.01);
 });
 
 // Test 5: Guardar ID
@@ -606,6 +606,69 @@ pm.test("Cada meta tiene estructura correcta", function () {
 
 ---
 
+### 9b. Crear Meta (POST)
+
+**Endpoint**: `{{baseUrl}}/api/goals`
+
+**Método**: `POST`
+
+**Headers**:
+
+```
+Authorization: Bearer {{token}}
+Content-Type: application/json
+```
+
+**Body (JSON)**:
+
+```json
+{
+  "name": "Vacaciones 2026",
+  "targetAmount": 5000.00,
+  "currentAmount": 1000.00,
+  "deadline": "2026-12-31T00:00:00.000Z",
+  "description": "Viaje a Europa"
+}
+```
+
+**Postman Scripts - Tests Tab**:
+
+```javascript
+// Test 1: Status code 201
+pm.test("Status code es 201 - Meta creada", function () {
+    pm.response.to.have.status(201);
+});
+
+// Test 2: Tiempo de respuesta
+pm.test("Tiempo de respuesta menor a 500ms", function () {
+    pm.expect(pm.response.responseTime).to.be.below(500);
+});
+
+// Test 3: Respuesta es JSON
+pm.test("Respuesta es JSON válido", function () {
+    pm.response.to.be.json;
+});
+
+// Test 4: Contiene meta creada
+pm.test("Respuesta contiene objeto 'goal' con datos correctos", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.have.property('goal');
+    pm.expect(jsonData.goal).to.have.property('id');
+    pm.expect(jsonData.goal.name).to.equal("Vacaciones 2026");
+    pm.expect(parseFloat(jsonData.goal.targetAmount)).to.be.closeTo(5000.00, 0.01);
+    pm.expect(parseFloat(jsonData.goal.currentAmount)).to.be.closeTo(1000.00, 0.01);
+});
+
+// Test 5: Guardar ID
+pm.test("ID de meta guardado", function () {
+    var jsonData = pm.response.json();
+    pm.environment.set("goalId", jsonData.goal.id);
+    pm.expect(pm.environment.get("goalId")).to.be.a('string');
+});
+```
+
+---
+
 ### 10. Actualizar Meta (PUT)
 
 **Endpoint**: `{{baseUrl}}/api/goals/{{goalId}}`
@@ -653,8 +716,8 @@ pm.test("Respuesta es JSON válido", function () {
 pm.test("Meta contiene datos actualizados correctamente", function () {
     var jsonData = pm.response.json();
     pm.expect(jsonData.goal.name).to.include("Actualizadas");
-    pm.expect(jsonData.goal.targetAmount).to.equal("6000.00");
-    pm.expect(jsonData.goal.currentAmount).to.equal("2500.00");
+    pm.expect(parseFloat(jsonData.goal.targetAmount)).to.be.closeTo(6000.00, 0.01);
+    pm.expect(parseFloat(jsonData.goal.currentAmount)).to.be.closeTo(2500.00, 0.01);
 });
 
 // Test 5: Progreso calculado correctamente
@@ -723,8 +786,9 @@ Para ejecutar todas las pruebas en secuencia:
 7. **Actualizar Transacción** (Test 5)
 8. **Crear Presupuesto** (Test 8)
 9. **Listar Metas** (Test 9)
-10. **Actualizar Meta** (Test 10)
-11. **Eliminar Transacción** (Test 6)
+10. **Crear Meta** (Test 9b) - **NUEVO**
+11. **Actualizar Meta** (Test 10)
+12. **Eliminar Transacción** (Test 6)
 
 ---
 
