@@ -6,6 +6,7 @@ import { LayoutDashboard, CreditCard, Receipt, PieChart, LogOut, Target, Bell, W
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 
 const TransactionModal = dynamic(() => import('./TransactionModal'), { ssr: false })
 
@@ -33,7 +34,7 @@ const NavBarCurve = () => (
         {/* COLOR CAMBIADO: fill-zinc-900 (Gris oscuro visible) en lugar de 950 (Negro) */}
         <path
             d="M0,0 L130,0 C155,0 160,50 187.5,50 C215,50 220,0 245,0 L375,0 V80 H0 Z"
-            className="fill-zinc-900" 
+            className="fill-zinc-900"
         />
     </svg>
 )
@@ -78,11 +79,11 @@ export default function Navigation() {
                 <div className="flex flex-col h-full p-6">
                     {/* Logo Section */}
                     <div className="flex items-center gap-3 mb-12">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow-primary">
-                            <Wallet className="w-7 h-7 text-white" />
+                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-glow-primary overflow-hidden bg-black">
+                            <Image src="/logo.png" alt="Logo" width={48} height={48} className="object-cover w-full h-full" />
                         </div>
                         <div>
-                            <h1 className="text-xl font-bold text-white tracking-tight">FinanzasPro</h1>
+                            <h1 className="text-xl font-bold text-white tracking-tight">VixFinanzas</h1>
                             <p className="text-xs text-zinc-500">Gestión Inteligente</p>
                         </div>
                     </div>
@@ -159,7 +160,7 @@ export default function Navigation() {
             {/* MOBILE NAV: COLOR CORREGIDO */}
             {/* ========================================================= */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 h-[80px]">
-                
+
                 <NavBarCurve />
 
                 <div className="relative w-full h-full z-10">
@@ -179,7 +180,7 @@ export default function Navigation() {
 
                     {/* ICONOS */}
                     <div className="h-full flex items-end justify-between px-8 pb-4">
-                        
+
                         {/* Izquierda */}
                         <div className="flex items-center gap-6">
                             {mobileLeftItems.map((item) => {

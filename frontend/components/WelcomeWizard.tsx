@@ -31,7 +31,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
     const handleSkip = async () => {
         try {
             await api.post('/api/user/profile/complete')
-            showToast('¡Bienvenido a FinanzasPro!', 'success')
+            showToast('¡Bienvenido a VixFinanzas!', 'success')
             onComplete()
         } catch (error) {
             console.error('Error skipping wizard:', error)
@@ -83,7 +83,7 @@ export default function WelcomeWizard({ isOpen, onComplete }: WelcomeWizardProps
                                 <Sparkles className="w-8 h-8 text-white" />
                             </div>
                             <h2 className="text-2xl font-bold text-white mb-2">
-                                ¡Bienvenido a FinanzasPro!
+                                ¡Bienvenido a VixFinanzas!
                             </h2>
                             <p className="text-slate-400 text-sm">
                                 Completa tu perfil para una experiencia personalizada

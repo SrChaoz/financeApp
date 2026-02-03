@@ -1,6 +1,6 @@
 {
-  "name": "FinanzasPro - Gestión de Finanzas Personales",
-  "short_name": "FinanzasPro",
+  "name": "VixFinanzas - Gestión de Finanzas Personales",
+  "short_name": "VixFinanzas",
   "description": "Gestiona tus finanzas personales de manera inteligente. Controla ingresos, gastos, presupuestos y metas de ahorro.",
   "start_url": "/",
   "display": "standalone",
@@ -10,7 +10,11 @@
   "scope": "/",
   "lang": "es-ES",
   "dir": "ltr",
-  "categories": ["finance", "productivity", "business"],
+  "categories": [
+    "finance",
+    "productivity",
+    "business"
+  ],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",

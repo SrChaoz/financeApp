@@ -67,7 +67,7 @@ export default function LoginPage() {
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-primary mb-6 shadow-glow-primary transform transition-transform hover:scale-105">
                         <Wallet className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">FinanzasPro</h1>
+                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">VixFinanzas</h1>
                     <p className="text-muted text-lg">
                         {isLogin ? 'Bienvenido de vuelta' : 'Crea tu cuenta gratis'}
                     </p>

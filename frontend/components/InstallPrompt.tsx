@@ -100,7 +100,7 @@ export default function InstallPrompt() {
 
                     <div className="flex-1">
                         <h3 className="font-semibold text-white mb-1">
-                            Instalar FinanzasPro
+                            Instalar VixFinanzas
                         </h3>
                         <p className="text-sm text-slate-400 mb-3">
                             Instala la app en tu dispositivo para acceso rápido y funcionalidad offline

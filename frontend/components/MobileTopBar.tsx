@@ -2,6 +2,7 @@
 
 import { Wallet, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function MobileTopBar() {
     const router = useRouter()
@@ -11,10 +12,10 @@ export default function MobileTopBar() {
             <div className="flex items-center justify-between px-4 py-3">
                 {/* Logo */}
                 <div className="flex items-center gap-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow-primary">
-                        <Wallet className="w-5 h-5 text-white" />
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-glow-primary overflow-hidden bg-black">
+                        <Image src="/logo.png" alt="Logo" width={36} height={36} className="object-cover w-full h-full" />
                     </div>
-                    <span className="text-lg font-bold text-white tracking-tight">FinanzasPro</span>
+                    <span className="text-lg font-bold text-white tracking-tight">VixFinanzas</span>
                 </div>
 
                 {/* Settings Button */}

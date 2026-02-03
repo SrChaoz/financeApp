@@ -1,7 +1,7 @@
-// FinanzasPro Service Worker
+// VixFinanzas Service Worker
 // Version 1.0.0
 
-const CACHE_VERSION = 'finanzaspro-v1.0.0';
+const CACHE_VERSION = 'vixfinanzas-v1.0.0';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const API_CACHE = `${CACHE_VERSION}-api`;
@@ -9,17 +9,10 @@ const API_CACHE = `${CACHE_VERSION}-api`;
 // Files to cache immediately on install
 const STATIC_ASSETS = [
     '/',
-    '/dashboard',
-    '/transactions',
-    '/accounts',
-    '/budgets',
-    '/goals',
-    '/reminders',
-    '/profile',
-    '/offline',
     '/manifest.json',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
+    '/favicon.png'
 ];
 
 // Install event - cache static assets
@@ -52,8 +45,8 @@ self.addEventListener('activate', (event) => {
                 return Promise.all(
                     cacheNames
                         .filter((cacheName) => {
-                            // Delete old caches
-                            return cacheName.startsWith('finanzaspro-') &&
+                            // Delete old caches (finanzaspro, kobefinanzas, vixfinanzas versions)
+                            return (cacheName.startsWith('finanzaspro-') || cacheName.startsWith('kobefinanzas-') || cacheName.startsWith('vixfinanzas-')) &&
                                 cacheName !== STATIC_CACHE &&
                                 cacheName !== DYNAMIC_CACHE &&
                                 cacheName !== API_CACHE;
@@ -240,7 +233,7 @@ self.addEventListener('push', (event) => {
     };
 
     event.waitUntil(
-        self.registration.showNotification('FinanzasPro', options)
+        self.registration.showNotification('VixFinanzas', options)
     );
 });
 

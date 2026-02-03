@@ -19,13 +19,13 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-    title: 'FinanzasPro - Gestión Financiera Personal',
+    title: 'VixFinanzas - Gestión Financiera Personal',
     description: 'Administra tus finanzas personales de manera inteligente',
     manifest: '/manifest.json',
     appleWebApp: {
         capable: true,
         statusBarStyle: 'black-translucent',
-        title: 'FinanzasPro',
+        title: 'VixFinanzas',
     },
     icons: {
         icon: [
