@@ -479,10 +479,10 @@ describe('FinanzasPro - Suite de Pruebas E2E', () => {
     })
 
     /**
-     * TEST BONUS: Modo Responsive
+     * Modo Responsive
      * Verifica que la aplicación es responsive en diferentes viewports
      */
-    describe('BONUS: Verificar Diseño Responsive', () => {
+    describe('Verificar Diseño Responsive', () => {
         beforeEach(() => {
             cy.visit(`${baseUrl}/login`)
             cy.get('input[type="text"]').type(testUser.username)
